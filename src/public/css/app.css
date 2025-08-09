@@ -1,0 +1,59 @@
+header {
+  width: 100%;
+  background-color: #000;
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header .logo {
+  display: flex;
+  align-items: center;
+}
+
+header .logo img {
+  height: 30px;
+  width: auto;
+}
+
+/* ================================
+   PC対応（1400px〜1540px）
+================================ */
+@media screen and (min-width: 1400px) and (max-width: 1540px) {
+  header {
+    padding: 20px 40px;
+  }
+
+  header .logo img {
+    height: 36px;
+  }
+}
+
+/* ================================
+   タブレット対応（768px〜850px）
+================================ */
+@media screen and (min-width: 768px) and (max-width: 850px) {
+  header {
+    padding: 15px 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  header .logo {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  header .logo img {
+    height: 28px;
+  }
+
+  /* sidebar が存在する場合に備えて */
+  .sidebar-toggle {
+    display: block;
+    margin-left: auto;
+  }
+}

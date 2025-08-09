@@ -1,0 +1,145 @@
+.nav-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px; /* spacing between sections */
+  flex-wrap: wrap;
+  padding: 0 20px;
+}
+
+/* 左・中央・右の共通設定 */
+.left-area,
+.center-area,
+.right-area {
+  display: flex;
+  align-items: center;
+}
+
+.left-area {
+  flex: 1;
+  min-width: 50px;
+}
+
+.center-area {
+  flex: 2;
+  justify-content: center;
+  min-width: 0;
+  justify-content: center;
+}
+
+/* 右は右寄せして、ボタンを横並びに */
+.right-area {
+  flex: 1;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-wrap: nowrap;
+}
+
+/* ボタン共通スタイル */
+.nav-link,
+.logout-button {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+  padding: 6px 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.logout-form {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0;
+}
+.logout-button {
+  display: inline-flex;  /* 横並びを明示 */
+  align-items: center;
+  justify-content: center;
+}
+
+.sell-button {
+  background-color: white;
+  color: black;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.sell-button:hover {
+  background-color: #f0f0f0;
+}
+
+.logout-button,
+.nav-link,
+.sell-button {
+  writing-mode: horizontal-tb; 
+  white-space: nowrap;         
+  text-align: center;
+}
+
+/* -----------------------------
+   PC対応（1400px〜1540px）
+----------------------------- */
+@media screen and (min-width: 1400px) and (max-width: 1540px) {
+  .nav-bar {
+    padding: 0 40px;
+    gap: 30px;
+  }
+
+  .nav-link,
+  .logout-button {
+    font-size: 15px;
+    padding: 8px 14px;
+  }
+
+  .sell-button {
+    padding: 8px 14px;
+    font-size: 15px;
+  }
+
+  .search-input {
+    font-size: 16px;
+    padding: 8px 14px;
+  }
+}
+
+/* -----------------------------
+   タブレット対応（768px〜850px）
+----------------------------- */
+@media screen and (min-width: 768px) and (max-width: 850px) {
+  .nav-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 10px 20px;
+  }
+
+  .left-area,
+  .center-area,
+  .right-area {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .right-area {
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  .nav-link,
+  .logout-button,
+  .sell-button {
+    font-size: 14px;
+    padding: 6px 10px;
+  }
+
+  .search-input {
+    width: 100%;
+    font-size: 15px;
+    padding: 8px 12px;
+  }
+}

@@ -1,0 +1,220 @@
+body {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background-color: #fff;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+.container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+h2 {
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+h3 {
+  font-size: 18px;
+  color: #555;
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+/* 一般フォーム要素 */
+.form-block {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #000;
+}
+
+.container input[type="text"],
+.container input[type="number"],
+.container input[type="file"],
+.container select,
+.container textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.container textarea {
+  resize: vertical;
+}
+
+.container input:focus,
+.container select:focus,
+.container textarea:focus {
+  border-color: #888;
+  outline: none;
+}
+
+/* エラー表示 */
+.error {
+  color: #ff5252;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+/* カテゴリー選択（横並び＆カスタムチェックボックス） */
+.checkbox-inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-input {
+  display: none;
+}
+
+.checkbox-label {
+  display: inline-block;
+  padding: 4px 7px;
+  border: 1.5px solid #ff5252;
+  border-radius: 12px;
+  color: #ff5252;
+  background-color: #fff;
+  font-size: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.checkbox-input:checked + .checkbox-label {
+  background-color: #ff5252;
+  color: #fff;
+}
+
+/* 出品ボタン */
+.submit-button {
+  display: block;
+  width: 100%;
+  background-color: #ff5252;
+  color: white;
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  margin-top: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #ff3939;
+}
+
+/* ファイルアップロード */
+.file-upload-input {
+  display: none;
+}
+
+.file-upload-label {
+  display: inline-block;
+  padding: 6px 12px;
+  border: 1.5px solid #ff5252;
+  border-radius: 12px;
+  background-color: #fff;
+  color: #ff5252;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* -----------------------------
+   PC対応（1400px〜1540px）
+----------------------------- */
+@media screen and (min-width: 1400px) and (max-width: 1540px) {
+  .container {
+    max-width: 700px;
+    padding: 30px;
+  }
+
+  h2 {
+    font-size: 26px;
+  }
+
+  h3 {
+    font-size: 20px;
+    margin-top: 35px;
+  }
+
+  .checkbox-label {
+    font-size: 11px;
+    padding: 5px 10px;
+  }
+
+  .submit-button {
+    font-size: 18px;
+    padding: 14px;
+  }
+
+  .file-upload-label {
+    font-size: 13px;
+    padding: 8px 14px;
+  }
+}
+
+/* -----------------------------
+   タブレット対応（768px〜850px）
+----------------------------- */
+@media screen and (min-width: 768px) and (max-width: 850px) {
+  .container {
+    max-width: 540px;
+    padding: 25px;
+  }
+
+  h2 {
+    font-size: 22px;
+    margin-bottom: 25px;
+  }
+
+  h3 {
+    font-size: 18px;
+    margin-top: 30px;
+  }
+
+  label,
+  .checkbox-label {
+    font-size: 13px;
+  }
+
+  .container input,
+  .container select,
+  .container textarea {
+    font-size: 15px;
+    padding: 9px;
+  }
+
+  .checkbox-label {
+    padding: 4px 8px;
+    border-radius: 10px;
+  }
+
+  .submit-button {
+    font-size: 16px;
+    padding: 12px;
+  }
+
+  .file-upload-label {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+}

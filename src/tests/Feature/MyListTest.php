@@ -1,0 +1,73 @@
+<?php
+
+namespace Tests\Feature;
+
+use App\Models\User;
+use App\Models\Item;
+use App\Models\Like;
+use App\Models\Purchase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
+class MyListTest extends TestCase
+{
+    use RefreshDatabase;
+
+    /** @test */
+    public function liked_items_are_displayed_on_mylist_page()
+    {
+        $user = User::factory()->create();
+        $likedItem = Item::factory()->create([
+            'user_id' => $user->id,
+        ]);
+        $unlikedItem = Item::factory()->create();
+
+        // ユーザーがlikedItemにいいねをする
+        Like::factory()->create([
+            'user_id' => $user->id,
+            'item_id' => $likedItem->id,
+        ]);
+
+        $this->actingAs($user);
+
+        $response = $this->get('/?tab=mylist');
+        $response->assertStatus(200);
+        $response->assertSee($likedItem->title);
+        $response->assertDontSee($unlikedItem->title);
+    }
+
+    /** @test */
+    public function sold_label_is_displayed_for_purchased_items_in_mylist()
+    {
+        $user = User::factory()->create();
+        $item = Item::factory()->create([
+            'status' => Item::STATUS_SOLD,
+        ]);
+
+        // ユーザーがいいねした商品
+        Like::factory()->create([
+            'user_id' => $user->id,
+            'item_id' => $item->id,
+        ]);
+
+        // 購入履歴も作成（Sold状態の根拠）
+        Purchase::factory()->create([
+            'user_id' => $user->id,
+            'item_id' => $item->id,
+        ]);
+
+        $this->actingAs($user);
+
+        $response = $this->get('/?tab=mylist');
+        $response->assertStatus(200);
+        $response->assertSee('sold');  // soldラベルは小文字なので注意
+    }
+
+    /** @test */
+    public function guest_user_sees_no_items_on_mylist()
+    {
+        $response = $this->get('/?tab=mylist');
+        $response->assertStatus(200);
+        $response->assertDontSee('<div class="product-card">', false); // 商品カードが表示されていないことを確認
+    }
+}
