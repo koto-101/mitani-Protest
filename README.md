@@ -13,11 +13,13 @@
 `docker-compose exec php bash`
 2. パッケージインストール
 `composer install`
-3. .env ファイル作成
+3. ディレクトリを移動
+`cd src/`
+4. .env ファイル作成
 ```bash
 cp .env.example .env
 ```
-4. .env に以下のDB設定を記述
+5. .env に以下のDB設定を記述
 ``` text
 DB_CONNECTION=mysql
 DB_HOST=mysql
@@ -28,23 +30,23 @@ DB_PASSWORD=laravel_pass
 
 MAIL_FROM_ADDRESS=no-reply@example.com
 ```
-5. アプリケーションキーの作成
+6. アプリケーションキーの作成
 ``` bash
 php artisan key:generate
 ```
-6. 設定キャッシュ（.env変更時は都度推奨）  
+7. 設定キャッシュ（.env変更時は都度推奨）  
    `php artisan config:cache`
-7. マイグレーションの実行
+8. マイグレーションの実行
 ``` bash
 php artisan migrate
 ```
 
-8. シーディングの実行
+9. シーディングの実行
 ``` bash
 php artisan db:seed
 ```
 
-9. storageディレクトリのシンボリックリンク作成 
+10. storageディレクトリのシンボリックリンク作成 
 ``` bash
 php artisan storage:link
 ```
@@ -108,9 +110,9 @@ https://dashboard.stripe.com/test/apikeys
 以下を `.env` または `.env.testing` に追記：
 
 ```env
-STRIPE_KEY=your_stripe_publishable_key
-STRIPE_SECRET=your_stripe_secret_key
-STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret
+STRIPE_KEY=sk_test_**********
+STRIPE_SECRET=pk_test_**********
+STRIPE_WEBHOOK_SECRET=whsec_**********
 ```
 
 ※ これらのキーはセキュリティ上、Gitに含めていません。自身のアカウントで取得し、ローカルに設定してください。
