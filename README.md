@@ -34,8 +34,10 @@ MAIL_FROM_ADDRESS=no-reply@example.com
 ``` bash
 php artisan key:generate
 ```
-7. 設定キャッシュ（.env変更時は都度推奨）  
-   `php artisan config:cache`
+7. 設定キャッシュ（.env変更時は都度推奨） 
+``` bash 
+`php artisan config:cache`
+```
 8. マイグレーションの実行
 ``` bash
 php artisan migrate
