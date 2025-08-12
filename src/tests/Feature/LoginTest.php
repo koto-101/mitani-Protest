@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-// use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
 
@@ -11,7 +10,7 @@ class LoginTest extends TestCase
 {
     use RefreshDatabase;
 
-   /** @test メールアドレス未入力時にバリデーションメッセージが表示される */
+   /** @test */
     public function email_is_required_to_login()
     {
         $response = $this->from('/login')->post('/login', [
@@ -23,7 +22,7 @@ class LoginTest extends TestCase
         $response->assertSessionHasErrors(['email']);
     }
 
-    /** @test パスワード未入力時にバリデーションメッセージが表示される */
+    /** @test */
     public function password_is_required_to_login()
     {
         $response = $this->from('/login')->post('/login', [
@@ -35,7 +34,7 @@ class LoginTest extends TestCase
         $response->assertSessionHasErrors(['password']);
     }
 
-    /** @test 誤った情報でログインできず、エラーメッセージが表示される */
+    /** @test */
     public function login_fails_with_invalid_credentials()
     {
         $response = $this->from('/login')->post('/login', [
@@ -45,11 +44,11 @@ class LoginTest extends TestCase
 
         $response->assertRedirect('/login');
         $response->assertSessionHasErrors([
-            'email' => 'ログイン情報が登録されていません', // あなたのFormRequestのエラーメッセージに合わせる
+            'email' => 'ログイン情報が登録されていません',
         ]);
     }
 
-    /** @test 正しい情報でログインできる */
+    /** @test */
     public function user_can_login_with_valid_credentials()
     {
         $user = User::factory()->create([

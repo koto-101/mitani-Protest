@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ExhibitionRequest;
 use App\Http\Requests\CommentRequest;
 
-
+ 
 class ItemController extends Controller
 {
     public function index(Request $request)
@@ -84,6 +84,9 @@ class ItemController extends Controller
      */
     public function comment(CommentRequest $request, Item $item)
     {
+        if ($item->user_id === Auth::id()) {
+            return redirect()->back()->with('comment_error', '自分の商品にはコメントできません。');
+        }
         Comment::create([
             'item_id' => $item->id,
             'user_id' => Auth::id(),
@@ -132,17 +135,4 @@ class ItemController extends Controller
         return redirect('/');
     }
 
-    // public function checkout($item_id)
-    // {
-    //     $item = Item::findOrFail($item_id);
-    //     return view('purchases.checkout', compact('item'));
-    // }
-
-    // 購入処理（POST）
-    // public function purchase(PurchaseRequest $request, $item_id)
-    // {        
-    //     $validated = $request->validated();
-
-    //     return redirect('/');
-    // }
 }

@@ -73,7 +73,7 @@
             {{-- コメント欄 --}}
             <div id="comment-section" class="section comments">
                 <h4>コメント（{{ $item->comments()->count() }}件）</h4>
-
+                
                 {{-- コメント一覧 --}}
                 @foreach($item->comments as $comment)
                     <div class="comment-card">
@@ -87,11 +87,18 @@
                     </div>
                 @endforeach
 
+                @error('content')
+                    <p class="text-danger">{{ $message }}</p>
+                @enderror
+                @if(session('comment_error'))
+                    <div class="error-box">{{ session('comment_error') }}</div>
+                @endif
+
                 {{-- コメント投稿 --}}
                 <form action="/item/{{ $item->id }}/comment" method="POST" class="comment-form">
                     @csrf
                     <div class="form-group">
-                        <textarea name="content" class="comment-input" rows="3" placeholder="コメントを入力してください"></textarea>
+                        <textarea name="content" class="comment-input" rows="3" placeholder="コメントを入力してください">{{ old('content') }}</textarea>
                     </div>
                     <button type="submit" class="btn-red">コメントを送信する</button>
                 </form>

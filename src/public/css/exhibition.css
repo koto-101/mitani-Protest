@@ -4,6 +4,7 @@ body {
   margin: 0;
   padding: 0;
   color: #333;
+  
 }
 
 .container {
@@ -25,7 +26,6 @@ h3 {
   margin-bottom: 15px;
 }
 
-/* 一般フォーム要素 */
 .form-block {
   margin-bottom: 20px;
 }
@@ -61,7 +61,6 @@ label {
   outline: none;
 }
 
-/* エラー表示 */
 .error {
   color: #ff5252;
   font-size: 12px;
@@ -102,7 +101,6 @@ label {
   color: #fff;
 }
 
-/* 出品ボタン */
 .submit-button {
   display: block;
   width: 100%;
@@ -138,9 +136,7 @@ label {
   transition: all 0.3s ease;
 }
 
-/* -----------------------------
-   PC対応（1400px〜1540px）
------------------------------ */
+/* ===== Media Queries ===== */
 @media screen and (min-width: 1400px) and (max-width: 1540px) {
   .container {
     max-width: 700px;
@@ -172,9 +168,6 @@ label {
   }
 }
 
-/* -----------------------------
-   タブレット対応（768px〜850px）
------------------------------ */
 @media screen and (min-width: 768px) and (max-width: 850px) {
   .container {
     max-width: 540px;

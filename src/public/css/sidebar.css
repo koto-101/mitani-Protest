@@ -7,7 +7,6 @@
   padding: 0 20px;
 }
 
-/* 左・中央・右の共通設定 */
 .left-area,
 .center-area,
 .right-area {
@@ -27,7 +26,6 @@
   justify-content: center;
 }
 
-/* 右は右寄せして、ボタンを横並びに */
 .right-area {
   flex: 1;
   justify-content: flex-end;
@@ -35,7 +33,6 @@
   flex-wrap: nowrap;
 }
 
-/* ボタン共通スタイル */
 .nav-link,
 .logout-button {
   color: white;
@@ -54,7 +51,7 @@
   margin: 0;
 }
 .logout-button {
-  display: inline-flex;  /* 横並びを明示 */
+  display: inline-flex;
   align-items: center;
   justify-content: center;
 }
@@ -80,9 +77,7 @@
   text-align: center;
 }
 
-/* -----------------------------
-   PC対応（1400px〜1540px）
------------------------------ */
+/* ===== Media Queries ===== */
 @media screen and (min-width: 1400px) and (max-width: 1540px) {
   .nav-bar {
     padding: 0 40px;
@@ -106,9 +101,6 @@
   }
 }
 
-/* -----------------------------
-   タブレット対応（768px〜850px）
------------------------------ */
 @media screen and (min-width: 768px) and (max-width: 850px) {
   .nav-bar {
     flex-direction: column;

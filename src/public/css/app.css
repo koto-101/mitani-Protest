@@ -17,9 +17,7 @@ header .logo img {
   width: auto;
 }
 
-/* ================================
-   PC対応（1400px〜1540px）
-================================ */
+/* ===== Media Queries ===== */
 @media screen and (min-width: 1400px) and (max-width: 1540px) {
   header {
     padding: 20px 40px;
@@ -30,9 +28,6 @@ header .logo img {
   }
 }
 
-/* ================================
-   タブレット対応（768px〜850px）
-================================ */
 @media screen and (min-width: 768px) and (max-width: 850px) {
   header {
     padding: 15px 20px;
@@ -51,7 +46,6 @@ header .logo img {
     height: 28px;
   }
 
-  /* sidebar が存在する場合に備えて */
   .sidebar-toggle {
     display: block;
     margin-left: auto;

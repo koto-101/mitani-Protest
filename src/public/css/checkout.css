@@ -34,7 +34,6 @@
     background-color: #f9f9f9;
 }
 
-/* レイアウト全体 */
 .checkout-container {
   display: flex;
   flex-wrap: wrap;
@@ -44,20 +43,6 @@
   font-family: "Helvetica Neue", Arial, sans-serif;
 }
 
-/* 左右カラム用クラスはBladeにないので必要に応じて追加してください */
-/*
-.left-column {
-  flex: 2;
-  min-width: 0;
-}
-
-.right-column {
-  flex: 1;
-  min-width: 250px;
-}
-*/
-
-/* 商品情報 */
 .product-info {
   display: flex;
   align-items: flex-start;
@@ -84,15 +69,12 @@
   color: #555;
 }
 
-/* セクションの区切り線 */
-/* 左右カラムがないなら以下は不要かもしれません */
 .left-column > *:not(:last-child) {
   border-bottom: 1px solid #ccc;
   padding-bottom: 20px;
   margin-bottom: 20px;
 }
 
-/* 支払い方法セクション */
 label {
   display: block;
   font-size: 14px;
@@ -117,7 +99,6 @@ label {
   background-color: #f9f9f9;
 }
 
-/* 配送先セクション */
 .form-field {
   margin-bottom: 10px;
 }
@@ -139,7 +120,6 @@ label {
   cursor: pointer;
 }
 
-/* 右カラム：支払い概要 */
 .payment-summary-box {
   border: 1px solid #ccc;
   padding: 15px;
@@ -157,7 +137,6 @@ label {
   width: 100px;
 }
 
-/* 購入ボタン */
 button.btn-primary-custom {
   width: 100%;
   padding: 12px;
@@ -175,7 +154,7 @@ button.btn-primary-custom:hover {
   background-color: #ff3939;
 }
 
-/* --- PC対応 (1400px〜1540px) --- */
+/* ===== Media Queries ===== */
 @media (min-width: 1400px) and (max-width: 1540px) {
   .checkout-container {
     max-width: 900px;
@@ -205,7 +184,6 @@ button.btn-primary-custom:hover {
   }
 }
 
-/* --- タブレット対応 (768px〜850px) --- */
 @media (min-width: 768px) and (max-width: 850px) {
   .checkout-container {
     flex-direction: column;

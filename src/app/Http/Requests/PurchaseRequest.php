@@ -19,7 +19,7 @@ class PurchaseRequest extends FormRequest
                 'required',
                 function ($attribute, $value, $fail) {
                     if ($value === 'user') {
-                        return; // OK（ユーザー登録住所を使う）
+                        return;
                     }
 
                     if (!\App\Models\ShippingAddress::where('id', $value)->exists()) {

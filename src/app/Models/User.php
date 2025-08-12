@@ -53,12 +53,15 @@ class User extends Authenticatable implements MustVerifyEmail
             return asset('storage/' . $this->avatar_path);
         }
 
-        return asset('images/default-avatar.png'); // デフォルト画像
+        return asset('images/default-avatar.png'); 
     }
 
     public function likedItems()
     {
-        return $this->belongsToMany(Item::class, 'likes', 'user_id', 'item_id')->withTimestamps();
+        return $this->belongsToMany(Item::class, 'likes', 'user_id', 'item_id')
+                    ->withTimestamps()
+                    ->with('images')
+                    ->select('items.*');
     }
 
     // 出品した商品
@@ -67,7 +70,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Item::class);
     }
 
-    // 購入情報（purchases 経由で item を取得する）
+    // 購入情報
     public function purchases()
     {
         return $this->hasMany(Purchase::class);

@@ -14,7 +14,7 @@
 
         <div>
             <label for="name">ユーザー名</label>
-            <input type="text" name="name" id="name" value="{{ old('name') }}">
+            <input type="text" name="name" id="name" value="{{ old('name') }}" autofocus>
             @error('name')
                 <div class="error">{{ $message }}</div>
             @enderror
@@ -22,7 +22,7 @@
 
         <div>
             <label for="email">メールアドレス</label>
-            <input type="email" name="email" id="email" value="{{ old('email') }}">
+            <input type="text" name="email" id="email" value="{{ old('email') }}">
             @error('email')
                 <div class="error">{{ $message }}</div>
             @enderror

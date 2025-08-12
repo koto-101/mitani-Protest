@@ -117,17 +117,13 @@ class ItemsTableSeeder extends Seeder
 
             $sourcePath = public_path($itemData['image_path']);
 
-            // 保存先のファイル名をランダム生成
             $filename = Str::random(40) . '.' . pathinfo($sourcePath, PATHINFO_EXTENSION);
 
-            // 保存先のパス（storage/app/public/items）
             $storagePath = 'items/' . $filename;
 
-            // storage にコピー
             if (file_exists($sourcePath)) {
                 Storage::disk('public')->put($storagePath, file_get_contents($sourcePath));
 
-                // image_path を保存（表示できるパス）
                 $item->images()->create([
                     'image_path' => $storagePath,
                 ]);
@@ -135,13 +131,10 @@ class ItemsTableSeeder extends Seeder
                 logger("Image not found: {$sourcePath}");
             }
 
-            // 現在のカテゴリとの重複を防ぐ
             $existingCategoryIds = $item->categories()->pluck('categories.id')->toArray();
 
-            // まだ登録されていないカテゴリだけからランダムに2つ取得
             $availableCategoryIds = $categories->pluck('id')->diff($existingCategoryIds)->shuffle()->take(2)->toArray();
 
-            // 重複なしでカテゴリを追加
             if (!empty($availableCategoryIds)) {
                 $item->categories()->attach($availableCategoryIds);
             }

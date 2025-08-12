@@ -12,7 +12,6 @@
   background: #fff;
 }
 
-/* タイトル */
 .edit-address-container h2 {
   text-align: center;
   margin-bottom: 30px;
@@ -20,12 +19,10 @@
   font-size: 24px;
 }
 
-/* フォームの各グループ */
 .edit-address-container .form-field {
   margin-bottom: 20px;
 }
 
-/* ラベル */
 .edit-address-container label {
   display: block;
   margin-bottom: 8px;
@@ -33,7 +30,6 @@
   color: #555;
 }
 
-/* inputの見た目 */
 .edit-address-container input.input-text {
   width: 100%;
   padding: 10px;
@@ -48,14 +44,12 @@
   border-color: #888;
 }
 
-/* エラーメッセージ */
 .edit-address-container .error {
   color: #ff5252;
   font-size: 12px;
   margin-top: 5px;
 }
 
-/* ボタン */
 .edit-address-container button.btn-primary-custom {
   width: 100%;
   padding: 12px;
@@ -73,7 +67,7 @@
   background-color: #ff3939;
 }
 
-/* レスポンシブ調整（ログイン画面に合わせる） */
+/* ===== Media Queries ===== */
 @media screen and (min-width: 1400px) and (max-width: 1540px) {
   .edit-address-container {
     max-width: 550px;

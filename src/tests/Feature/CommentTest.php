@@ -32,7 +32,7 @@ class CommentTest extends TestCase
             'content' => 'これはテストコメントです。',
         ]);
 
-        $response->assertRedirect(); // リダイレクトされること
+        $response->assertRedirect();
         $this->assertDatabaseHas('comments', [
             'user_id' => $user->id,
             'item_id' => $item->id,
@@ -51,7 +51,7 @@ class CommentTest extends TestCase
             'content' => '未ログインでのコメント',
         ]);
 
-        $response->assertRedirect('/login'); // 認証されていないのでログインへリダイレクト
+        $response->assertRedirect('/login');
 
         $this->assertDatabaseMissing('comments', [
             'content' => '未ログインでのコメント',

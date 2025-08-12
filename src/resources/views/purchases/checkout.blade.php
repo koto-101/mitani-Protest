@@ -58,7 +58,6 @@
             <a href="{{ url('/purchase/address/' . $item->id) }}" class="btn-secondary-custom">変更する</a>
         </div>
 
-       @if($paymentMethod === 'card' || $paymentMethod === 'convenience')
             <div class="payment-summary-box">
                 <p><strong>商品代金</strong>　￥{{ number_format($item->price) }}</p>
                 <p><strong>支払い方法</strong>　
@@ -69,7 +68,6 @@
                     @endif
                 </p>
             </div>
-        @endif
 
         {{-- 購入ボタン --}}
         <div class="form-field">

@@ -124,14 +124,11 @@ class ItemListTest extends TestCase
             'image_path' => 'items/test.jpg',
         ]);
 
-        // カテゴリを複数追加
         $categories = \App\Models\Category::factory()->count(2)->create();
         $item->categories()->attach($categories->pluck('id'));
 
-        // いいねを追加
         $item->likes()->create(['user_id' => $user->id]);
 
-        // コメントを追加
         $item->comments()->create([
             'user_id' => $user->id,
             'content' => 'これは素晴らしい商品ですね！',
@@ -140,7 +137,6 @@ class ItemListTest extends TestCase
         $response = $this->get(route('items.show', $item->id));
         $response->assertStatus(200);
 
-        // 各情報が表示されているか確認
         $response->assertSee($item->title);
         $response->assertSee($item->brand);
         $response->assertSee(number_format($item->price));
@@ -148,16 +144,13 @@ class ItemListTest extends TestCase
         $response->assertSee($item->condition);
     
 
-        // カテゴリ名が表示されている
         foreach ($categories as $category) {
             $response->assertSee($category->name);
         }
 
-        // いいね数とコメント数
         $response->assertSee((string) $item->likes->count());
         $response->assertSee('コメント（' . $item->comments()->count() . '件）');
 
-        // コメント内容とユーザー名
         $response->assertSee($user->name);
         $response->assertSee('これは素晴らしい商品ですね！');
     }

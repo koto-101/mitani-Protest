@@ -15,14 +15,13 @@ class ExhibitionTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function 出品商品情報が正しく保存される()
+    public function listed_item_information_is_saved_correctly()
     {
         Storage::fake('public');
 
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        // 出品情報
         $category = Category::factory()->create(['name' => '本']);
 
         $formData = [
@@ -41,7 +40,6 @@ class ExhibitionTest extends TestCase
 
         $item = Item::where('title', 'テスト商品')->first();
 
-        // itemsテーブルに保存されているか確認
         $this->assertDatabaseHas('items', [
             'title' => 'テスト商品',
             'condition' => '未使用',
@@ -51,13 +49,11 @@ class ExhibitionTest extends TestCase
             'user_id' => $user->id,
         ]);
 
-        // category_itemテーブルに中間データが保存されているか確認
         $this->assertDatabaseHas('category_item', [
             'item_id' => $item->id,
             'category_id' => $category->id,
         ]);
 
-        // 画像が保存されているか確認
         Storage::disk('public')->assertExists('items/' . $formData['images'][0]->hashName());
     }
 }

@@ -44,7 +44,6 @@ class ExhibitionRequest extends FormRequest
             'title.required'      => '商品名を入力してください。',
             'description.required' => '商品の説明を入力してください。',
             'price.required'      => '価格を入力してください。',
-            // 必要に応じてメッセージ追加
         ];
     }
 }

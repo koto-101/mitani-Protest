@@ -58,7 +58,7 @@ body {
   color: #2a5db0;
 }
 
-/* --- PC対応 (1400px〜1540px) --- */
+/* ===== Media Queries ===== */
 @media (min-width: 1400px) and (max-width: 1540px) {
   .container {
     max-width: 700px;
@@ -80,7 +80,6 @@ body {
   }
 }
 
-/* --- タブレット対応 (768px〜850px) --- */
 @media (min-width: 768px) and (max-width: 850px) {
   .container {
     max-width: 90%;

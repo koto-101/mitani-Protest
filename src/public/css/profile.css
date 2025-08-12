@@ -14,7 +14,6 @@ body {
   box-sizing: border-box;
 }
 
-/* プロフィール情報 */
 .profile-info {
   display: flex;
   align-items: center;
@@ -54,7 +53,6 @@ body {
   color: #fff;
 }
 
-/* タブメニュー */
 .tab-menu {
   display: flex;
   border-bottom: 1px solid #e0e0e0;
@@ -86,7 +84,6 @@ body {
   border-radius: 3px;
 }
 
-/* 商品カード */
 .item-card {
   display: inline-block;
   width: 240px;
@@ -119,7 +116,7 @@ body {
   color: #333;
 }
 
-/* レスポンシブ - PC */
+/* ===== Media Queries ===== */
 @media (min-width: 1400px) and (max-width: 1540px) {
   .container.mypage {
     max-width: 1100px;
@@ -145,7 +142,6 @@ body {
   }
 }
 
-/* レスポンシブ - タブレット */
 @media (min-width: 768px) and (max-width: 850px) {
   .container.mypage {
     padding: 20px;

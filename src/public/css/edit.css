@@ -60,7 +60,6 @@ h2 {
   margin-top: 5px;
 }
 
-/* プロフィール画像 */
 .profile-avatar {
   width: 100px;
   height: 100px;
@@ -81,7 +80,6 @@ h2 {
   flex-direction: column;
 }
 
-/* ファイル選択ボタン */
 .file-input-hidden {
   display: none;
 }
@@ -102,7 +100,6 @@ h2 {
   background-color: #ffeaea;
 }
 
-/* 送信ボタン */
 .btn {
   width: 100%;
   padding: 12px;
@@ -120,8 +117,7 @@ h2 {
   background-color: #ff3939;
 }
 
-/* レスポンシブ対応 */
-/* --- PC対応 (1400px〜1540px) 上書きと強化 --- */
+/* ===== Media Queries ===== */
 @media screen and (min-width: 1400px) and (max-width: 1540px) {
   .profile-container {
     max-width: 600px;
@@ -149,8 +145,6 @@ h2 {
   }
 }
 
-
-/* --- タブレット対応 (768px〜850px) 上書きと改善 --- */
 @media screen and (min-width: 768px) and (max-width: 850px) {
   .profile-container {
     max-width: 480px;

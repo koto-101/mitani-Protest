@@ -14,9 +14,9 @@ class CreateCategoriesTable extends Migration
    public function up()
     {
         Schema::create('categories', function (Blueprint $table) {
-            $table->id(); // 主キー・自動インクリメント
-            $table->string('name')->unique()->notNullable(); // カテゴリー名は一意、NOT NULL
-            $table->timestamps(); // created_at & updated_at
+            $table->id();
+            $table->string('name')->unique()->notNullable();
+            $table->timestamps();
         });
     }
 

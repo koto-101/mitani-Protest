@@ -60,7 +60,7 @@ h5 {
 }
 
 .sold-label {
-  background: #b33a2c;
+  background: #ff0000;;
   color: #fff;
   font-size: 18px;
   font-weight: bold;
@@ -70,7 +70,6 @@ h5 {
   margin-left: 10px;
 }
 
-/* 商品情報 */
 .info-list {
   list-style: none;
   padding: 0;
@@ -85,7 +84,6 @@ h5 {
   border: none;
 }
 
-/* カテゴリ */
 .category-badge {
   background: #c6c5c5;
   color: #000;
@@ -95,7 +93,6 @@ h5 {
   margin-right: 5px;
 }
 
-/* コメント一覧 */
 .comment-card {
   border: 1px solid #eee;
   border-radius: 8px;
@@ -135,7 +132,6 @@ h5 {
   flex-direction: column;
 }
 
-/* コメント投稿 */
 .comment-form textarea {
   width: 100%;
   padding: 10px 15px;
@@ -151,7 +147,6 @@ h5 {
   outline: none;
 }
 
-/* 赤ボタン */
 .btn-red {
   background: #ff3939;
   color: #fff;
@@ -170,7 +165,6 @@ h5 {
   background: #cc2e2e;
 }
 
-/* いいね・コメント */
 .icon-group {
   display: flex;
   gap: 30px;
@@ -215,17 +209,15 @@ h5 {
   color: #555;
 }
 
-/* エラーメッセージ */
-.error-box {
-  background-color: #ffe6e6;
-  color: #b33a2c;
+.error-box ,
+.text-danger {
+  color: #ff3939;
   padding: 10px 15px;
   border-radius: 6px;
   margin-top: 15px;
   font-size: 14px;
 }
 
-/* 各セクションのマージン */
 .section {
   margin-top: 30px;
 }
@@ -234,7 +226,7 @@ h5 {
   margin-top: 20px;
 }
 
-/* === レスポンシブ（1400px ～ 1540px）=== */
+/* ===== Media Queries ===== */
 @media (min-width: 1400px) and (max-width: 1540px) {
   .item-container {
     max-width: 1280px !important;
@@ -272,7 +264,6 @@ h5 {
   }
 }
 
-/* === レスポンシブ（768px ～ 850px）=== */
 @media (min-width: 768px) and (max-width: 850px) {
   .item-container {
     max-width: 750px !important;

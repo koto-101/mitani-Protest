@@ -19,24 +19,6 @@ class PurchaseTest extends TestCase
         return $item;
     }
 
-    /** @test */
-    // public function user_can_purchase_an_item()
-    // {
-    //     $user = User::factory()->create();
-    //     $this->actingAs($user);
-
-    //     $item = $this->createItemWithImage();
-
-    //     $response = $this->post("/purchase/{$item->id}");
-
-    //     $response->assertRedirect('/items'); // リダイレクト先が一覧などの場合
-
-    //     $this->assertDatabaseHas('items', [
-    //         'id' => $item->id,
-    //         'status' => '売却済み',
-    //     ]);
-    // }
-
     public function webhook_marks_item_as_sold()
     {
         $this->withoutMiddleware(\App\Http\Middleware\VerifyStripeWebhookSignature::class);
@@ -50,6 +32,7 @@ class PurchaseTest extends TestCase
                     'metadata' => [ 
                         'item_id' => $item->id,
                     ],
+                    'client_reference_id' => 1,
                 ],
             ],
         ];
@@ -71,7 +54,7 @@ class PurchaseTest extends TestCase
 
         $response = $this->get('/');
 
-        $response->assertSee('sold'); // 商品一覧ページで sold ラベルが表示されているか
+        $response->assertSee('sold');
     }
 
     /** @test */
@@ -86,7 +69,7 @@ class PurchaseTest extends TestCase
 
         $response = $this->get("/mypage/profile");
 
-        $response->assertSee($item->title); // プロフィール画面に購入済み商品があるか
+        $response->assertSee($item->title);
     }
 
     /** @test */
@@ -97,7 +80,6 @@ class PurchaseTest extends TestCase
 
         $item = Item::factory()->create();
 
-        // 'card' を渡す（ビューが期待してるのと一致させる）
         $response = $this->get("/purchase/{$item->id}?payment_method=card");
 
         $response->assertSee('カード払い');

@@ -22,7 +22,6 @@ class MyListTest extends TestCase
         ]);
         $unlikedItem = Item::factory()->create();
 
-        // ユーザーがlikedItemにいいねをする
         Like::factory()->create([
             'user_id' => $user->id,
             'item_id' => $likedItem->id,
@@ -44,13 +43,11 @@ class MyListTest extends TestCase
             'status' => Item::STATUS_SOLD,
         ]);
 
-        // ユーザーがいいねした商品
         Like::factory()->create([
             'user_id' => $user->id,
             'item_id' => $item->id,
         ]);
 
-        // 購入履歴も作成（Sold状態の根拠）
         Purchase::factory()->create([
             'user_id' => $user->id,
             'item_id' => $item->id,
@@ -60,7 +57,7 @@ class MyListTest extends TestCase
 
         $response = $this->get('/?tab=mylist');
         $response->assertStatus(200);
-        $response->assertSee('sold');  // soldラベルは小文字なので注意
+        $response->assertSee('sold');
     }
 
     /** @test */

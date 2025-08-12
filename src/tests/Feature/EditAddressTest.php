@@ -14,7 +14,7 @@ class EditAddressTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function 登録した住所が商品購入画面に反映される()
+    public function registered_address_is_displayed_on_purchase_page()
     {
         $user = User::factory()->create([
             'postal_code' => '123-4567',
@@ -29,7 +29,6 @@ class EditAddressTest extends TestCase
 
         $this->actingAs($user);
 
-        // 送付先住所変更画面にて住所登録
         $response = $this->post(route('purchase.update_address', ['item_id' => $item->id]), [
             'postal_code' => '987-6543',
             'address' => '東京都渋谷区2-2-2',
@@ -38,7 +37,6 @@ class EditAddressTest extends TestCase
 
         $response->assertRedirect(route('purchase.checkout', ['item_id' => $item->id]));
 
-        // 商品購入画面を再度開く
         $response = $this->get(route('purchase.checkout', ['item_id' => $item->id]));
 
         $response->assertStatus(200);
@@ -48,7 +46,7 @@ class EditAddressTest extends TestCase
     }
 
     /** @test */
-    public function 購入した商品に送付先住所が紐づいて登録される()
+    public function purchased_item_is_registered_with_shipping_address()
     {
         $user = User::factory()->create();
         $item = Item::factory()->create([
@@ -58,14 +56,12 @@ class EditAddressTest extends TestCase
 
         $this->actingAs($user);
 
-        // 住所登録
         $this->post(route('purchase.update_address', ['item_id' => $item->id]), [
             'postal_code' => '555-5555',
             'address' => '大阪市中央区3-3-3',
             'building_name' => '購入先住所ビル',
         ]);
 
-        // 購入処理はWebhookで行うため、ここではPurchaseモデルを直接作成して紐づけを確認
 
         $shippingAddress = ShippingAddress::where('item_id', $item->id)->first();
 
@@ -79,11 +75,9 @@ class EditAddressTest extends TestCase
             'shipping_address_id' => $shippingAddress->id,
         ]);
 
-        // itemステータスも売却済みに更新
         $item->status = '売却済み';
         $item->save();
 
-        // DBに正しく保存されているか確認
         $this->assertDatabaseHas('purchases', [
             'id' => $purchase->id,
             'shipping_address_id' => $shippingAddress->id,

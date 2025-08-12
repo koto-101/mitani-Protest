@@ -8,16 +8,14 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id(); // UNSIGNED BIGINT + PK + AUTO_INCREMENT
-            $table->string('name', 20); // ユーザー名：20文字以内
-            $table->string('email')->unique(); // メール：一意制約
-            $table->string('password'); // パスワード：バリデーションは8文字以上をRequestで制御  
+            $table->id(); 
+            $table->string('name', 20); 
+            $table->string('email')->unique();
+            $table->string('password');
             $table->string('postal_code')->nullable();
             $table->string('address')->nullable();
             $table->string('building_name')->nullable();
             $table->string('avatar_path')->nullable();
-
-            // $table->rememberToken();
             $table->timestamp('email_verified_at')->nullable(); 
             
             $table->timestamps(); 

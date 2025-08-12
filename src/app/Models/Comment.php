@@ -15,13 +15,11 @@ class Comment extends Model
         'content',
     ];
 
-    // ユーザーとのリレーション（コメントしたユーザー）
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    // 商品とのリレーション（コメントされた商品）
     public function item()
     {
         return $this->belongsTo(Item::class);
