@@ -10,17 +10,14 @@
 
     {{-- プロフィール情報 --}}
     <div class="profile-info">
-        {{-- プロフィール画像 --}}
         @if($user->avatar_path)
             <img src="{{ asset('storage/' . $user->avatar_path) }}" alt="プロフィール画像" class="profile-avatar">
         @else
             <img src="{{ asset('images/default-avatar.png') }}" alt="デフォルト画像" class="profile-avatar">
         @endif
 
-        {{-- ユーザー名 --}}
         <h3>{{ $user->name }}</h3>
 
-        {{-- プロフィール編集ボタン --}}
         <a href="{{ url('/mypage/profile') }}" class="edit-profile-btn">プロフィールを編集</a>
     </div>
 
@@ -34,7 +31,6 @@
         </a>
     </div>
 
-    {{-- 商品リスト --}}
     @foreach($items as $item)
         <div class="item-card">
             <a href="{{ url('/item/' . $item->id) }}">

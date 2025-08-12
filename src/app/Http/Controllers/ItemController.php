@@ -56,9 +56,6 @@ class ItemController extends Controller
         return view('items.show', compact('item'));
     }
 
-    /**
-     * いいね処理（ログイン必須）
-     */
     public function toggleLike(Item $item)
     {
         $userId = Auth::id();
@@ -79,9 +76,6 @@ class ItemController extends Controller
         return redirect()->back();
     }
 
-    /**
-     * コメント投稿処理（ログイン必須）
-     */
     public function comment(CommentRequest $request, Item $item)
     {
         if ($item->user_id === Auth::id()) {
@@ -103,13 +97,11 @@ class ItemController extends Controller
         return view('items.exhibition', compact('categories'));
     }
 
-    // 商品登録処理
     public function store(ExhibitionRequest $request)
     {
         $user = Auth::user();
         $validated = $request->validated();
 
-        // 商品登録
         $item = new Item();
         $item->user_id = $user->id;
         $item->title = $validated['title'];
@@ -120,12 +112,10 @@ class ItemController extends Controller
         $item->save();
         $item->categories()->attach($validated['categories']);
 
-        // 画像保存処理（複数）
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
                 $path = $image->store('items', 'public');
 
-                // 画像モデルや関連テーブルがある場合は登録
                 $item->item_images()->create([
                     'image_path' => $path,
                 ]);

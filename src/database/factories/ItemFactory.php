@@ -18,7 +18,7 @@ class ItemFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => User::factory(), // ここが重要
+            'user_id' => User::factory(),
             'title' => $this->faker->word(),
             'brand' => $this->faker->company(),
             'description' => $this->faker->sentence(),

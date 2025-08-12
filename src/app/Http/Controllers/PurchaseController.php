@@ -12,7 +12,6 @@ use App\Http\Requests\AddressRequest;
 
 class PurchaseController extends Controller
 {
-    // 購入確認画面表示
     public function checkout(Request $request, $item_id)
     {
         $item = Item::with('images')->findOrFail($item_id);
@@ -28,7 +27,6 @@ class PurchaseController extends Controller
 
         $image_path = optional($item->images->first())->image_path;
 
-        // ストレージのURLを生成（publicストレージの場合）
         $image_url = $image_path ? asset('storage/' . $image_path) : null;
         
         $user = Auth::user();
@@ -36,7 +34,6 @@ class PurchaseController extends Controller
         $shippingAddress = ShippingAddress::where('item_id', $item->id)->first();
 
         if (!$shippingAddress) {
-            // user テーブルの住所を使ったダミーオブジェクトを生成
             $shippingAddress = (object)[
                 'postal_code' => $user->postal_code,
                 'address' => $user->address,
@@ -45,7 +42,6 @@ class PurchaseController extends Controller
             ];
         }
 
-        // id が null の場合は 'user' を使う
         $shipping_address_id = $shippingAddress->id ?? 'user';
 
         $paymentMethod = $request->query('payment_method');
@@ -57,19 +53,16 @@ class PurchaseController extends Controller
     {
         $item = Item::findOrFail($item_id);
 
-        // すでに登録されている住所があれば取得
         $shippingAddress = ShippingAddress::where('item_id', $item_id)->first();
 
         return view('purchases.edit_address', compact('item', 'shippingAddress'));
     }
 
-    // 住所更新処理
     public function updateAddress(AddressRequest $request, $item_id)
     {
         $item = Item::findOrFail($item_id);
         $user = Auth::user();
 
-        // 住所の新規作成 or 更新（item_idで1件のみ）
         ShippingAddress::updateOrCreate(
             ['item_id' => $item->id],
             [

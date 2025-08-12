@@ -21,7 +21,7 @@ class StripeController extends Controller
 
     public function createCheckoutSession(PurchaseRequest $request, $item_id)
     {
-        $item = \App\Models\Item::findOrFail($item_id);
+        $item = Item::findOrFail($item_id);
 
         $paymentMethod = $request->input('payment_method');
 
@@ -35,7 +35,6 @@ class StripeController extends Controller
         } elseif ($paymentMethod === 'convenience') {
             $paymentMethods = ['konbini'];
         } else {
-            // デフォルトはカード払い（必要に応じて変更）
             $paymentMethods = ['card'];
         }
 
@@ -72,7 +71,6 @@ class StripeController extends Controller
             return redirect('/')->with('error', 'セッションIDが見つかりません');
         }
 
-        // 実際の注文処理はWebhook側で行うためここでは通知のみ
         return redirect('/');
     }
 
@@ -91,7 +89,7 @@ class StripeController extends Controller
             $event = json_decode($payload, true);
             logger('Event type: ' . $event['type']);
 
-            return response()->json(['status' => 'ok'], 200); // 即レス
+            return response()->json(['status' => 'ok'], 200);
         }
 
         $sigHeader = $request->header('Stripe-Signature');
@@ -130,7 +128,6 @@ class StripeController extends Controller
                         'user_id' => $user_id,
                         'item_id' => $item_id,
                         'payment_method' => 'stripe',
-                        // 他に必要なカラムがあればここに追加
                     ]);
                     logger("Purchase record created for user {$user_id} and item {$item_id}.");
                 }

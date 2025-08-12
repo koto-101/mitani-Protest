@@ -8,7 +8,6 @@
 <div class="register-container">
     <h2>会員登録</h2>
 
-    {{-- 登録フォーム --}}
     <form action="/register" method="POST">
         @csrf
 

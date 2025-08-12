@@ -19,7 +19,7 @@ class UserFactory extends Factory
             'name' => mb_strimwidth($this->faker->name(), 0, 20, '', 'UTF-8'),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => bcrypt('password'), // パスワードは固定でもOK
+            'password' => bcrypt('password'),
             'postal_code' => $this->faker->postcode(),
             'address' => $this->faker->address(),
             'building_name' => $this->faker->optional()->secondaryAddress(),
@@ -27,7 +27,6 @@ class UserFactory extends Factory
             'created_at' => now(),
             'updated_at' => now(),
 
-            // 'remember_token' => Str::random(10),
         ];
     }
 }

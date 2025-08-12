@@ -36,7 +36,7 @@ php artisan key:generate
 ```
 7. 設定キャッシュ（.env変更時は都度推奨） 
 ``` bash 
-`php artisan config:cache`
+php artisan config:cache
 ```
 8. マイグレーションの実行
 ``` bash
@@ -121,7 +121,7 @@ STRIPE_WEBHOOK_SECRET=whsec_**********
 
 ## テストの実行
 
-以下のコマンドでテストが実行できます：
+以下のコマンドでテストが実行できます
 
 ```bash
 php artisan test

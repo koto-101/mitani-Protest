@@ -18,7 +18,6 @@
         <p> ¥{{ number_format($item->price) }}</p>
     </div>
 
-    {{-- 支払い方法 & 配送先 --}}
     <form action="{{ route('purchase.stripe.checkout', ['item_id' => $item->id]) }}" method="POST">
         @csrf
 
@@ -46,7 +45,6 @@
 
         <input type="hidden" name="payment_method" value="{{ $paymentMethod }}">
 
-        {{-- 配送先情報 --}}
         <div class="form-field">
             <label>配送先</label>
             <p>{{ $shippingAddress->postal_code }}<br>
@@ -58,18 +56,17 @@
             <a href="{{ url('/purchase/address/' . $item->id) }}" class="btn-secondary-custom">変更する</a>
         </div>
 
-            <div class="payment-summary-box">
-                <p><strong>商品代金</strong>　￥{{ number_format($item->price) }}</p>
-                <p><strong>支払い方法</strong>　
-                    @if($paymentMethod === 'card')
-                        カード払い
-                    @elseif($paymentMethod === 'convenience')
-                        コンビニ払い
-                    @endif
-                </p>
-            </div>
+        <div class="payment-summary-box">
+            <p><strong>商品代金</strong>　￥{{ number_format($item->price) }}</p>
+            <p><strong>支払い方法</strong>　
+                @if($paymentMethod === 'card')
+                    カード払い
+                @elseif($paymentMethod === 'convenience')
+                    コンビニ払い
+                @endif
+            </p>
+        </div>
 
-        {{-- 購入ボタン --}}
         <div class="form-field">
             <button type="submit" class="btn-primary-custom">購入する</button>
         </div>

@@ -24,7 +24,6 @@
             <p class="brand-text">{{ $item->brand }}</p>
             <h4 class="price-text">¥{{ number_format($item->price) }} <small>（税込）</small></h4>
 
-            {{-- アクションアイコン --}}
             <div class="icon-group">
                 <form action="/item/{{ $item->id }}/like-toggle" method="POST">
                     @csrf
@@ -40,23 +39,19 @@
                 </a>
             </div>
 
-            {{-- 購入ボタン --}}
             <div class="purchase-button">
                 <a href="/purchase/{{ $item->id }}" class="btn-red">購入手続きへ</a>
             </div>
 
-            {{-- エラーメッセージ --}}
             @if(session('error'))
                 <div class="error-box">{{ session('error') }}</div>
             @endif
 
-            {{-- 商品説明 --}}
             <div class="section description">
                 <h5>商品説明</h5>
                 <p>{{ $item->description }}</p>
             </div>
 
-            {{-- 商品情報 --}}
             <div class="section info">
                 <h5>商品の情報</h5>
                 <ul class="info-list">
@@ -70,11 +65,9 @@
                 </ul>
             </div>
 
-            {{-- コメント欄 --}}
             <div id="comment-section" class="section comments">
                 <h4>コメント（{{ $item->comments()->count() }}件）</h4>
-                
-                {{-- コメント一覧 --}}
+
                 @foreach($item->comments as $comment)
                     <div class="comment-card">
                         <div class="comment-body">
@@ -94,7 +87,6 @@
                     <div class="error-box">{{ session('comment_error') }}</div>
                 @endif
 
-                {{-- コメント投稿 --}}
                 <form action="/item/{{ $item->id }}/comment" method="POST" class="comment-form">
                     @csrf
                     <div class="form-group">

@@ -1,5 +1,5 @@
 <div class="nav-bar">
-    <div class="nav-section left-area"></div> <!-- 空：左1/3のスペース -->
+    <div class="nav-section left-area"></div> 
 
     <div class="nav-section center-area">
         <form action="/" method="GET" class="search-form">
