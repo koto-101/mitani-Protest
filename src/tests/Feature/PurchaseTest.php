@@ -19,6 +19,7 @@ class PurchaseTest extends TestCase
         return $item;
     }
 
+    /** @test */
     public function webhook_marks_item_as_sold()
     {
         $this->withoutMiddleware(\App\Http\Middleware\VerifyStripeWebhookSignature::class);

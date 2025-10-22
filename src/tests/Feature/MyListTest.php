@@ -17,22 +17,25 @@ class MyListTest extends TestCase
     public function liked_items_are_displayed_on_mylist_page()
     {
         $user = User::factory()->create();
+        $this->actingAs($user);
+        
         $likedItem = Item::factory()->create([
             'user_id' => $user->id,
+            'title' => 'これはいいねされた商品',
         ]);
-        $unlikedItem = Item::factory()->create();
+        $unlikedItem = Item::factory()->create([
+            'title' => 'これはいいねしていない商品',
+        ]);
 
         Like::factory()->create([
             'user_id' => $user->id,
             'item_id' => $likedItem->id,
         ]);
 
-        $this->actingAs($user);
-
         $response = $this->get('/?tab=mylist');
         $response->assertStatus(200);
-        $response->assertSee($likedItem->title);
-        $response->assertDontSee($unlikedItem->title);
+        $response->assertSee('これはいいねされた商品');
+        $response->assertDontSee('これはいいねしていない商品');
     }
 
     /** @test */
