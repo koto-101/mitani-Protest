@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\ItemImage; 
+use App\Models\User;
 
 class Item extends Model
 {
@@ -13,6 +14,12 @@ class Item extends Model
 
     const STATUS_LISTED = '出品中';
     const STATUS_SOLD = '売却済み';
+    const STATUS_TRANSACTION = '取引中'; 
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function images(): HasMany
     {
@@ -46,6 +53,11 @@ class Item extends Model
     public function item_images()
     {
         return $this->hasMany(ItemImage::class);
+    }
+    
+    public function chatRoom()
+    {
+        return $this->hasOne(ChatRoom::class);
     }
 
     protected $fillable = ['title', 'brand', 'description', 'price', 'condition', 'status'];

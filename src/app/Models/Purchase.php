@@ -14,6 +14,15 @@ class Purchase extends Model
     {
         return $this->belongsTo(Item::class);
     }
+    public function chatRoom()
+    {
+        return $this->hasOne(ChatRoom::class, 'item_id', 'item_id');
+    }
+
+    public function transaction()
+    {
+        return $this->hasOne(Transaction::class, 'purchase_id', 'id');
+    }
 
     protected $fillable = [
         'user_id',

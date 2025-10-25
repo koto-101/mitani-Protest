@@ -20,7 +20,7 @@
             <a href="/login" class="nav-link">ログイン</a>
         @endguest
 
-        <a href="/mypage?page=buy" class="nav-link">マイページ</a>
+        <a href="{{ route('mypage.show') }}" class="nav-link">マイページ</a>
         <a href="/sell" class="nav-link sell-button">出品</a>
     </div>
 </div>

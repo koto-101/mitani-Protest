@@ -116,6 +116,33 @@ body {
   color: #333;
 }
 
+/* ここから */
+.star {
+    font-size: 1.2rem;
+    color: #ccc;
+}
+.star.filled {
+    color: #f5c518;
+}
+
+.item-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.item-card {
+    width: 160px;
+}
+
+.badge-rounded {
+    border-radius: 50%;
+    padding: 0.4em 0.6em;
+    font-size: 0.8em;
+}
+
+
 /* ===== Media Queries ===== */
 @media (min-width: 1400px) and (max-width: 1540px) {
   .container.mypage {

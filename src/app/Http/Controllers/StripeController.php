@@ -7,6 +7,7 @@ use App\Http\Requests\PurchaseRequest;
 use Stripe\StripeClient;
 use App\Models\Item;
 use \App\Models\Purchase;
+use App\Models\Transaction;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
@@ -71,7 +72,8 @@ class StripeController extends Controller
             return redirect('/')->with('error', 'セッションIDが見つかりません');
         }
 
-        return redirect('/');
+        return redirect()->route('mypage.show')
+                         ->with('success', '決済が完了しました。取引画面からやり取りを開始してください。');
     }
 
     public function cancel()
@@ -84,13 +86,6 @@ class StripeController extends Controller
         logger('Webhook accessed');
         $payload = $request->getContent();
         logger('RAW payload: ' . $payload);
-
-        if (false)  {
-            $event = json_decode($payload, true);
-            logger('Event type: ' . $event['type']);
-
-            return response()->json(['status' => 'ok'], 200);
-        }
 
         $sigHeader = $request->header('Stripe-Signature');
         $endpointSecret = env('STRIPE_WEBHOOK_SECRET');
@@ -110,31 +105,69 @@ class StripeController extends Controller
         logger('Event type: ' . $event->type);
 
         if ($event->type === 'checkout.session.completed') {
-            $session = $event->data->object;
+            try {
+                $session = $event->data->object;
 
-            logger('Metadata item_id: ' . ($session->metadata->item_id ?? 'none'));
+                $item_id = $session->metadata->item_id ?? null;
+                $buyer_id = $session->client_reference_id ?? null;
 
-            $item_id = $session->metadata->item_id ?? null;
-            $user_id = $session->client_reference_id ?? null;
-
-            if ($item_id && $user_id) {
-                $item = Item::find($item_id);
-                if ($item && $item->status !== '売却済み') {
-                    $item->status = '売却済み';
-                    $item->save();
-                    logger("Item ID {$item_id} marked as sold.");
-
-                    Purchase::create([
-                        'user_id' => $user_id,
-                        'item_id' => $item_id,
-                        'payment_method' => 'stripe',
-                    ]);
-                    logger("Purchase record created for user {$user_id} and item {$item_id}.");
+                if (!$item_id || !$buyer_id) {
+                    logger('Missing item_id or buyer_id in session metadata');
+                    return response('Missing data', 400);
                 }
+
+                $item = Item::find($item_id);
+
+                if (!$item) {
+                    logger("Item not found: {$item_id}");
+                    return response('Item not found', 404);
+                }
+
+                if ($item->status === '売却済み') {
+                    logger("Item already sold: {$item_id}");
+                    return response('Item already sold', 400);
+                }
+
+                // 売却済みに変更
+                $item->status = '売却済み';
+                $item->save();
+
+                logger("Item ID {$item_id} marked as sold.");
+
+                // 購入レコード作成
+                $purchase = Purchase::create([
+                    'user_id' => $buyer_id,
+                    'item_id' => $item_id,
+                    'payment_method' => 'stripe',
+                ]);
+
+                logger("Purchase record created for user {$buyer_id} and item {$item_id}.");
+
+                Transaction::create([
+                    'purchase_id' => $purchase->id,
+                    'status' => 'in_progress',
+                ]);
+
+                logger("Transaction record created for purchase ID {$purchase->id}");
+
+                // 取引チャットルーム作成
+                try {
+                    $chatRoom = \App\Models\ChatRoom::create([
+                        'item_id' => $item->id,
+                        'buyer_id' => $buyer_id,
+                    ]);
+
+                    logger("Chat room created for item {$item_id}, users: {$buyer_id} and {$item->user_id}");
+                } catch (\Exception $e) {
+                    Log::error("Failed to create chat room: " . $e->getMessage());
+                }
+
+            } catch (\Exception $e) {
+                Log::error('Webhook processing failed: ' . $e->getMessage());
+                return response('Webhook processing error', 500);
             }
         }
 
         return response('Webhook handled', 200);
     }
-
 }
