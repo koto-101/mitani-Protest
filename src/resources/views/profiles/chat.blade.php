@@ -21,31 +21,59 @@
         </ul>
     </div>
 
-    @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
     {{-- チャットメイン --}}
-    <div class="chat-main flex-grow-1 p-4">
+    <div class="chat-main ">
         @php
             $transaction = $chatRoom->transaction;
             $isBuyer = auth()->id() === $chatRoom->buyer_id;
         @endphp
 
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="d-flex align-items-center">
-                <img src="{{ asset('storage/' . optional($item->item_images->first())->image_path) }}" alt="商品画像" class="me-3" width="60">
-                <div>
-                    <h5 class="mb-1">{{ $partner->name }}さんとの取引画面</h5>
-                    <p class="mb-0">{{ $item->title }} / ¥{{ number_format($item->price) }}</p>
+        <div class="chat-header">
+            <div class="chat-header-top">
+                <div class="profile-info d-flex align-items-center">
+                {{-- 相手ユーザー画像 --}}
+                @php
+                    $imagePath = $partner->avatar_path;
+
+                    if (empty($imagePath)) {
+                        // null または空欄ならデフォルト
+                        $imagePath = asset('images/default-avatar.png');
+                    } elseif (preg_match('/^https?:\/\//', $imagePath)) {
+                        // すでにフルURLならそのまま
+                        $imagePath = $imagePath;
+                    } elseif (str_starts_with($imagePath, 'storage/')) {
+                        // storageパスなら asset() で補完
+                        $imagePath = asset($imagePath);
+                    } elseif (str_starts_with($imagePath, 'images/')) {
+                        // public/images 配下も asset() で補完
+                        $imagePath = asset($imagePath);
+                    } else {
+                        // それ以外（DBがパスのみ）なら storage 配下として扱う
+                        $imagePath = asset('storage/' . $imagePath);
+                    }
+                @endphp
+                    <img src="{{ $imagePath }}" alt="{{ $partner->name }}さんのプロフィール画像" class="profile-img">
+                        <h5 class="mb-1 ms-2">{{ $partner->name }}さんとの取引画面</h5>
                 </div>
+
+                    {{-- 取引を完了するボタン --}}
+                    @if($isBuyer)
+                        <button id="openModal" class="btn btn-success" 
+                            @if($transaction->buyer_evaluated ?? false) disabled @endif>
+                            取引を完了する
+                        </button>
+                    @endif
             </div>
 
-            {{-- 購入者だけボタン表示 --}}
-            @if($isBuyer && !($transaction->buyer_evaluated ?? false))
-                <button id="openModal" class="btn btn-success">取引を完了する</button>
-            @endif
+            {{-- 商品情報 --}}
+            <div class="item-info">
+                <img src="{{ asset('storage/' . optional($item->item_images->first())->image_path) }}" 
+                    alt="{{ $item->title }}" class="item-image me-3">
+                <div>
+                    <p class="item-title">{{ $item->title }}</p>
+                    <p class="item-price">¥{{ number_format($item->price) }}</p>
+                </div>
+            </div>
         </div>
 
         {{-- 出品者が未評価 && 購入者が評価済みならモーダルを自動表示 --}}
@@ -54,45 +82,72 @@
         @endphp
 
         {{-- チャットエリア --}}
-        <div class="chat-box mb-3" style="max-height: 500px; overflow-y: auto;">
+        <div class="chat-box">
             @foreach($messages as $message)
-                <div class="d-flex {{ $message->sender_id === auth()->id() ? 'justify-content-end' : 'justify-content-start' }} mb-2">
-                    <div class="message p-2 rounded {{ $message->sender_id === auth()->id() ? 'bg-primary text-white' : 'bg-light' }}">
-                        {!! nl2br(e($message->message)) !!}
-                        @if($message->image_path)
-                            <div class="mt-2">
-                                <img src="{{ asset('storage/' . $message->image_path) }}" alt="画像" class="img-thumbnail" width="150">
-                            </div>
+                @php
+                    $isMine = $message->sender_id === auth()->id();
+                    $sender = $message->sender;
+                    $senderName = $sender->name ?? '不明なユーザー';
+                    $senderImage = $sender->avatar_path
+                        ? asset('storage/' . $sender->avatar_path)
+                        : asset('images/default-avatar.png');
+                @endphp
+
+                <div class="chat-message mb-3 {{ $isMine ? 'mine' : 'partner' }}">
+                    {{-- 送信者情報（名前＋画像） --}}
+                    <div class="message-header {{ $isMine ? 'mine' : 'partner' }}">
+                        @if($isMine)
+                            <span class="sender-name">{{ $senderName }}</span>
+                            <img src="{{ $senderImage }}" alt="プロフィール画像" class="sender-avatar">
+                        @else
+                            <img src="{{ $senderImage }}" alt="プロフィール画像" class="sender-avatar">
+                            <span class="sender-name">{{ $senderName }}</span>
                         @endif
-                        @if($message->sender_id === auth()->id())
-                            <div class="text-end small mt-1">
-                                <a href="#" class="text-light me-2 small edit-message-btn" data-id="{{ $message->id }}" data-message="{{ e($message->message) }}">編集</a>
-                                <form action="{{ route('chat.message.destroy', ['chatMessage' => $message->id]) }}" method="POST" style="display: inline;" onsubmit="return confirm('本当に削除しますか？');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-link p-0 text-light small">削除</button>
-                                </form>
-                            </div>
-                        @endif
+                    </div>
+
+                    {{-- 吹き出し部分 --}}
+                    <div class="{{ $isMine ? 'text-end' : 'text-start' }}">
+                        <div class="message rounded {{ $isMine ? 'bg-primary text-white' : 'bg-light' }}">
+                            {!! nl2br(e($message->message)) !!}
+                            @if($message->image_path)
+                                <div class="mt-2">
+                                    <img src="{{ asset('storage/' . $message->image_path) }}" alt="画像" class="img-thumbnail" width="150">
+                                </div>
+                            @endif
+                        </div>
                     </div>
                 </div>
             @endforeach
         </div>
 
         {{-- メッセージ入力 --}}
+        @php
+            $isTransactionCompleted = $transaction->buyer_evaluated && $transaction->seller_evaluated;
+        @endphp
+
         <form action="{{ route('chat.message.store', ['chatRoom' => $chatRoom->id]) }}" method="POST" enctype="multipart/form-data" class="d-flex align-items-center">
             @csrf
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    @foreach ($errors->all() as $error)
-                        <div>{{ $error }}</div>
-                    @endforeach
-                </div>
-            @endif
-            <input type="text" name="message" class="form-control me-2" placeholder="取引メッセージを記入してください">
-            <input type="file" name="image" class="form-control-file me-2" style="max-width: 150px;">
-            <button type="submit" class="btn btn-primary">
-                <i class="fas fa-paper-plane">✈</i>
+            <input type="text" name="message" class="form-control me-2" placeholder="取引メッセージを記入してください"
+                @if($isTransactionCompleted) disabled @endif>
+            <input type="file" 
+                id="imageInput" 
+                name="image" 
+                class="d-none" 
+                accept="image/*"
+                @if($isTransactionCompleted) disabled @endif>
+
+            {{-- 「画像を追加」ボタン --}}
+            <button type="button" 
+                    class="btn btn-outline-secondary me-2" 
+                    id="addImageButton"
+                    @if($isTransactionCompleted) disabled @endif>
+                    画像を追加
+            </button>
+
+            <button type="submit" 
+                    class="btn btn-light"
+                    @if($isTransactionCompleted) disabled @endif>
+                <i class="fa-regular fa-paper-plane"></i>
             </button>
         </form>
     </div>
@@ -115,7 +170,7 @@
 
 <div id="evaluationModal" class="modal-overlay" style="display: none;">
     <div class="modal-content">
-        <h2>取引完了の評価</h2>
+        <h2>取引が完了しました。</h2>
         <form method="POST" action="{{ route('evaluation.store', ['chatRoom' => $chatRoom->id]) }}">
             @csrf
             <p>今回の取引相手はどうでしたか？</p>
@@ -133,7 +188,6 @@
             <!-- ボタン -->
             <div class="modal-buttons">
                 <button type="submit" class="btn btn-primary">送信する</button>
-                <button type="button" id="closeModal" class="btn btn-secondary">キャンセル</button>
             </div>
         </form>
     </div>
@@ -142,6 +196,10 @@
 
 @push('scripts')
 <script>
+document.getElementById('addImageButton').addEventListener('click', function() {
+    document.getElementById('imageInput').click();
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     // ===== 評価モーダル =====
     const openBtn = document.getElementById('openModal');

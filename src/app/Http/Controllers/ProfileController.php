@@ -51,18 +51,18 @@ use App\Models\Transaction;
         $items = collect(); // 初期化
         $totalUnreadCount = 0;
 
-        // 未読メッセージ合計をタブに関係なく計算
         $chatRooms = ChatRoom::where(function($q) use ($user) {
             $q->where('buyer_id', $user->id)
             ->orWhereHas('item', fn($q2) => $q2->where('user_id', $user->id));
         })->with(['messages', 'reads'])->get();
 
         foreach ($chatRooms as $chatRoom) {
-            // 自分が最後に読んだメッセージIDを取得
-            $lastRead = $chatRoom->reads->firstWhere('user_id', $user->id);
-            $lastReadId = $lastRead ? $lastRead->last_read_message_id : 0; // まだ読んでなければ0
+            if ($chatRoom->messages->isEmpty()) {
+                continue; // メッセージがない場合は未読計算しない
+            }
 
-            // 未読は「自分以外が送ったメッセージで、最後に読んだIDより大きいもの」
+            $lastReadId = (int) optional($chatRoom->reads->firstWhere('user_id', $user->id))->last_read_message_id ?? 0;
+
             $unreadCount = ChatMessage::where('chat_room_id', $chatRoom->id)
                 ->where('sender_id', '!=', $user->id)
                 ->where('id', '>', $lastReadId)
@@ -82,13 +82,19 @@ use App\Models\Transaction;
 
             case 'transaction':
                 $transactions = Transaction::whereIn('status', ['in_progress', 'buyer_completed'])
-                    ->whereHas('purchase.chatRoom', function ($query) use ($user) {
-                        $query->where('buyer_id', $user->id)
-                            ->orWhereHas('item', function ($q) use ($user) {
-                                $q->where('user_id', $user->id);
-                            });
+                    ->whereHas('purchase', function ($q) use ($user) {
+                        $q->whereHas('chatRoom', function ($q2) use ($user) {
+                            $q2->where('buyer_id', $user->id)
+                                ->orWhereHas('item', function ($q3) use ($user) {
+                                    $q3->where('user_id', $user->id);
+                                });
+                        });
                     })
-                    ->with(['purchase.chatRoom.item.item_images', 'purchase.chatRoom.messages', 'purchase.chatRoom.reads'])
+                    ->with([
+                        'purchase.chatRoom.item.item_images',
+                        'purchase.chatRoom.messages',
+                        'purchase.chatRoom.reads'
+                    ])
                     ->get();
 
                 $items = $transactions->map(function ($transaction) use ($user) {

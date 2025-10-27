@@ -11,14 +11,10 @@
 <div class="container mypage">
 
     {{-- プロフィール情報 --}}
-    <div class="d-flex align-items-center justify-content-between profile-header mb-4">
-        <div class="d-flex align-items-center">
-            <div class="profile-avatar-wrapper me-3">
-                @if($user->avatar_path)
-                    <img src="{{ asset('storage/' . $user->avatar_path) }}" alt="プロフィール画像" class="profile-avatar">
-                @else
-                    <img src="{{ asset('images/default-avatar.png') }}" alt="デフォルト画像" class="profile-avatar">
-                @endif
+    <div class=" profile-header">
+        <div class="profile-left">
+            <div class="profile-avatar-wrapper">
+                <img src="{{ $user->profile_image_url }}" alt="プロフィール画像" class="profile-avatar">
             </div>
             <div>
                 <h3 class="mb-1">{{ $user->name }}</h3>
@@ -31,7 +27,7 @@
                             @if($i <= $roundedRating)
                                 <span class="star filled">★</span>
                             @else
-                                <span class="star">☆</span>
+                                <span class="star">★</span>
                             @endif
                         @endfor
                     </div>
@@ -53,7 +49,7 @@
         <a href="{{ url('/mypage?page=transaction') }}" class="tab-link {{ $currentPage === 'transaction' ? 'active' : '' }}">
             取引中の商品
             @if($totalUnreadCount > 0)
-                <span class="badge bg-danger ms-1">{{ $totalUnreadCount }}</span>
+                <span class="badge ms-1">{{ $totalUnreadCount }}</span>
             @endif
         </a>
     </div>
@@ -69,7 +65,7 @@
                             <img src="{{ asset('storage/' . optional($item->item_images->first())->image_path) }}" alt="{{ $item->title }}" class="item-image">
                             {{-- メッセージ数バッジ --}}
                             @if($item->unread_count > 0)
-                                <span class="badge bg-danger position-absolute top-0 start-0 translate-middle badge-rounded">
+                                <span class="badge-unread">
                                     {{ $item->unread_count }}
                                 </span>
                             @endif
@@ -80,8 +76,6 @@
                         <img src="{{ asset('storage/' . optional($item->item_images->first())->image_path) }}" alt="{{ $item->title }}" class="item-image">
                     </a>
                 @endif
-                <p class="item-title mt-2">{{ $item->title }}</p>
-                <p class="item-price">¥{{ number_format($item->price) }}</p>
             </div>
         @endforeach
     </div>
