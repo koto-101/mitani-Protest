@@ -118,12 +118,12 @@
                         <div class="message-bubble {{ $isMine ? 'text-end' : 'text-start' }}">
                             <div class="message rounded {{ $isMine ? 'bg-primary text-white' : 'bg-light' }}">
                                 {!! nl2br(e($message->message)) !!}
-                                @if($message->image_path)
-                                    <div class="mt-2">
-                                        <img src="{{ asset('storage/' . $message->image_path) }}" alt="画像" class="img-thumbnail" width="150">
-                                    </div>
-                                @endif
                             </div>
+                            @if($message->image_path)
+                                <div class="mt-2">
+                                    <img src="{{ asset('storage/' . $message->image_path) }}" alt="画像" class="img-thumbnail" width="150">
+                                </div>
+                            @endif
                         </div>
 
                         {{--編集・削除ボタン--}}
