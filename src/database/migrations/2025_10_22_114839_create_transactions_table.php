@@ -15,7 +15,7 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('chat_room_id')->nullable()->after('id');
+            $table->unsignedBigInteger('chat_room_id')->after('id');
             $table->unsignedBigInteger('purchase_id')->unique();
             $table->string('status', 50);
             $table->timestamp('completed_at')->nullable();
