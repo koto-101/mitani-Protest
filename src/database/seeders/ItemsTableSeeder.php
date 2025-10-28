@@ -21,6 +21,10 @@ class ItemsTableSeeder extends Seeder
         $users = User::all();
         $categories = Category::all();
 
+        // ここで出品するユーザーを固定
+        $user1 = $users->where('name', 'user1')->first();
+        $user2 = $users->where('name', 'user2')->first();
+
         $items = [
             [
                 'title' => '腕時計',
@@ -28,7 +32,8 @@ class ItemsTableSeeder extends Seeder
                 'brand' => 'Rolax',
                 'description' => 'スタイリッシュなデザインのメンズ腕時計',
                 'condition' => '良好',
-                'image_path' => 'images/Armani+Mens+Clock.png'
+                'image_path' => 'images/Armani+Mens+Clock.png',
+                'user' => $user1,
             ],
             [
                 'title' => 'HDD',
@@ -36,7 +41,8 @@ class ItemsTableSeeder extends Seeder
                 'brand' => '西芝',
                 'description' => '高速で信頼性の高いハードディスク',
                 'condition' => '目立った傷や汚れなし',
-                'image_path' => 'images/HDD+Hard+Disk.png'
+                'image_path' => 'images/HDD+Hard+Disk.png',
+                'user' => $user1,
             ],
             [
                 'title' => '玉ねぎ3束',
@@ -44,7 +50,8 @@ class ItemsTableSeeder extends Seeder
                 'brand' => null,
                 'description' => '新鮮な玉ねぎ3束のセット',
                 'condition' => 'やや傷や汚れあり',
-                'image_path' => 'images/iLoveIMG+d.png'
+                'image_path' => 'images/iLoveIMG+d.png',
+                'user' => $user1,
             ],
             [
                 'title' => '革靴',
@@ -52,7 +59,8 @@ class ItemsTableSeeder extends Seeder
                 'brand' => null,
                 'description' => 'クラシックなデザインの革靴',
                 'condition' => '状態が悪い',
-                'image_path' => 'images/Leather+Shoes+Product+Photo (1).png'
+                'image_path' => 'images/Leather+Shoes+Product+Photo (1).png',
+                'user' => $user1,
             ],
             [
                 'title' => 'ノートPC',
@@ -60,7 +68,8 @@ class ItemsTableSeeder extends Seeder
                 'brand' => null,
                 'description' => '高性能なノートパソコン',
                 'condition' => '良好',
-                'image_path' => 'images/Living+Room+Laptop.png'
+                'image_path' => 'images/Living+Room+Laptop.png',
+                'user' => $user1,
             ],
             [
                 'title' => 'マイク',
@@ -68,7 +77,8 @@ class ItemsTableSeeder extends Seeder
                 'brand' => null,
                 'description' => '高音質のレコーディング用マイク',
                 'condition' => '目立った傷や汚れなし',
-                'image_path' => 'images/Music+Mic+4632231.png'
+                'image_path' => 'images/Music+Mic+4632231.png',
+                'user' => $user2,
             ],
             [
                 'title' => 'ショルダーバッグ',
@@ -76,7 +86,8 @@ class ItemsTableSeeder extends Seeder
                 'brand' => null,
                 'description' => 'おしゃれなショルダーバッグ',
                 'condition' => 'やや傷や汚れあり',
-                'image_path' => 'images/Purse+fashion+pocket.png'
+                'image_path' => 'images/Purse+fashion+pocket.png',
+                'user' => $user2,
             ],
             [
                 'title' => 'タンブラー',
@@ -84,7 +95,8 @@ class ItemsTableSeeder extends Seeder
                 'brand' => null,
                 'description' => '使いやすいタンブラー',
                 'condition' => '状態が悪い',
-                'image_path' => 'images/Tumbler+souvenir.png'
+                'image_path' => 'images/Tumbler+souvenir.png',
+                'user' => $user2,
             ],
             [
                 'title' => 'コーヒーミル',
@@ -92,7 +104,8 @@ class ItemsTableSeeder extends Seeder
                 'brand' => 'Starbacks',
                 'description' => '手動のコーヒーミル',
                 'condition' => '良好',
-                'image_path' => 'images/Waitress+with+Coffee+Grinder.png'
+                'image_path' => 'images/Waitress+with+Coffee+Grinder.png',
+                'user' => $user2,
             ],
             [
                 'title' => 'メイクセット',
@@ -100,13 +113,14 @@ class ItemsTableSeeder extends Seeder
                 'brand' => null,
                 'description' => '便利なメイクアップセット',
                 'condition' => '目立った傷や汚れなし',
-                'image_path' => 'images/外出メイクアップセット.png'
+                'image_path' => 'images/外出メイクアップセット.png',
+                'user' => $user2,
             ],
         ];
 
         foreach ($items as $itemData) {
             $item = Item::create([
-                'user_id' => $users->random()->id,
+                'user_id' => $itemData['user']->id,
                 'title' => $itemData['title'],
                 'brand' => $itemData['brand'],
                 'description' => $itemData['description'],
@@ -116,14 +130,11 @@ class ItemsTableSeeder extends Seeder
             ]);
 
             $sourcePath = public_path($itemData['image_path']);
-
             $filename = Str::random(40) . '.' . pathinfo($sourcePath, PATHINFO_EXTENSION);
-
             $storagePath = 'items/' . $filename;
 
             if (file_exists($sourcePath)) {
                 Storage::disk('public')->put($storagePath, file_get_contents($sourcePath));
-
                 $item->images()->create([
                     'image_path' => $storagePath,
                 ]);
@@ -131,10 +142,9 @@ class ItemsTableSeeder extends Seeder
                 logger("Image not found: {$sourcePath}");
             }
 
+            // カテゴリはランダムで2つ
             $existingCategoryIds = $item->categories()->pluck('categories.id')->toArray();
-
             $availableCategoryIds = $categories->pluck('id')->diff($existingCategoryIds)->shuffle()->take(2)->toArray();
-
             if (!empty($availableCategoryIds)) {
                 $item->categories()->attach($availableCategoryIds);
             }

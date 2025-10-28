@@ -45,4 +45,14 @@ class ChatMessageRequest extends FormRequest
             'image' => '画像',
         ];
     }
+
+    public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    {
+        throw new \Illuminate\Http\Exceptions\HttpResponseException(
+            redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput() // ← ★これを追加！
+        );
+    }
 }

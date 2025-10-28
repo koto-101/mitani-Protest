@@ -21,7 +21,7 @@
                 @if(!is_null($user->average_rating))
                     <div class="rating-stars">
                         @php
-                            $roundedRating = round($user->average_rating ?? 0);
+                            $roundedRating = round($user->average_rating);
                         @endphp
                         @for ($i = 1; $i <= 5; $i++)
                             @if($i <= $roundedRating)

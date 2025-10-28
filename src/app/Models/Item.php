@@ -60,5 +60,13 @@ class Item extends Model
         return $this->hasOne(ChatRoom::class);
     }
 
-    protected $fillable = ['title', 'brand', 'description', 'price', 'condition', 'status'];
+    protected $fillable = [
+        'user_id',
+        'title',
+        'brand',
+        'description',
+        'price',
+        'condition',
+        'status',
+    ];
 }

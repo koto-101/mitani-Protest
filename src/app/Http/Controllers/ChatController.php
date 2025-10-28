@@ -88,7 +88,7 @@ class ChatController extends Controller
         }
 
         $message->save();
-// dd(request('message'));
+
         return redirect()->route('chat.show', ['chatRoom' => $chatRoom->id])
                          ->with('success', 'メッセージを送信しました。');
     }

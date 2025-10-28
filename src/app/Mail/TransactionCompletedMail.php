@@ -23,6 +23,10 @@ class TransactionCompletedMail extends Mailable
     {
         return $this->subject('購入者が取引を完了しました')
                     ->view('emails.transaction_completed')
-                    ->with(['chatRoom' => $this->chatRoom]);
+                    ->with([
+                        'item' => $this->chatRoom->item,
+                        'buyer' => $this->chatRoom->buyer,
+                        'chatRoom' => $this->chatRoom,
+                    ]);
     }
 }

@@ -13,6 +13,10 @@
         <ul class="list-unstyled">
             @foreach($otherChatItems as $other)
                 <li class="mb-2">
+                    {{-- 未読件数があれば通知マークを表示 --}}
+                    @if(isset($unreadCounts[$other->id]) && $unreadCounts[$other->id] > 0)
+                        <span class="badge bg-danger rounded-pill me-1">{{ $unreadCounts[$other->id] }}</span>
+                    @endif
                     <a href="{{ route('chat.show', ['chatRoom' => $other->id]) }}" class="text-decoration-none">
                         {{ $other->item->title ?? 'タイトルなし' }}
                     </a>
@@ -25,7 +29,10 @@
     <div class="chat-main ">
         @php
             $transaction = $chatRoom->transaction;
+            $item = $chatRoom->item;
             $isBuyer = auth()->id() === $chatRoom->buyer_id;
+            // 取引完了状態をチェック
+            $isTransactionCompleted = ($transaction->buyer_evaluated ?? false) && ($transaction->seller_evaluated ?? false);
         @endphp
 
         <div class="chat-header">
@@ -105,26 +112,45 @@
                         @endif
                     </div>
 
-                    {{-- 吹き出し部分 --}}
-                    <div class="{{ $isMine ? 'text-end' : 'text-start' }}">
-                        <div class="message rounded {{ $isMine ? 'bg-primary text-white' : 'bg-light' }}">
-                            {!! nl2br(e($message->message)) !!}
-                            @if($message->image_path)
-                                <div class="mt-2">
-                                    <img src="{{ asset('storage/' . $message->image_path) }}" alt="画像" class="img-thumbnail" width="150">
-                                </div>
-                            @endif
+                    {{-- 吹き出し部分と操作ボタン --}}
+                    <div class="d-flex align-items-end {{ $isMine ? 'flex-row-reverse' : '' }}">
+                        {{-- 吹き出し本体 --}}
+                        <div class="message-bubble {{ $isMine ? 'text-end' : 'text-start' }}">
+                            <div class="message rounded {{ $isMine ? 'bg-primary text-white' : 'bg-light' }}">
+                                {!! nl2br(e($message->message)) !!}
+                                @if($message->image_path)
+                                    <div class="mt-2">
+                                        <img src="{{ asset('storage/' . $message->image_path) }}" alt="画像" class="img-thumbnail" width="150">
+                                    </div>
+                                @endif
+                            </div>
                         </div>
+
+                        {{-- ★★★ 修正箇所: 編集・削除ボタンを追加 ★★★ --}}
+                        @if($isMine && !$isTransactionCompleted)
+                            <div class="message-buttons d-flex flex-column align-items-center me-2 ms-2">
+                                {{-- 編集リンク（モーダル起動用） --}}
+                                <a href="#" class="edit-message-btn text-muted small" 
+                                   data-id="{{ $message->id }}" 
+                                   data-message="{{ $message->message }}">編集</a>
+                                
+                                {{-- 削除フォーム --}}
+                                <form action="{{ route('chat.message.destroy', ['chatMessage' => $message->id]) }}" method="POST" class="m-0 p-0">
+                                    @csrf
+                                    @method('DELETE')
+                                    {{-- NOTE: confirm() は使えませんが、ここはLaravelの慣例として残します。ただし、カスタムモーダル推奨です。 --}}
+                                    <button type="submit" 
+                                            onclick="return confirm('本当にこのメッセージを削除しますか？')" 
+                                            class="btn btn-link text-danger p-0 border-0 small">削除</button>
+                                </form>
+                            </div>
+                        @endif
                     </div>
                 </div>
             @endforeach
         </div>
 
         {{-- メッセージ入力 --}}
-        @php
-            $isTransactionCompleted = $transaction->buyer_evaluated && $transaction->seller_evaluated;
-        @endphp
-
         <form action="{{ route('chat.message.store', ['chatRoom' => $chatRoom->id]) }}" method="POST" enctype="multipart/form-data" class="d-flex align-items-center">
             @csrf
             <input type="text" name="message" class="form-control me-2" placeholder="取引メッセージを記入してください"
@@ -138,15 +164,15 @@
 
             {{-- 「画像を追加」ボタン --}}
             <button type="button" 
-                    class="btn btn-outline-secondary me-2" 
-                    id="addImageButton"
-                    @if($isTransactionCompleted) disabled @endif>
+                        class="btn btn-outline-secondary me-2" 
+                        id="addImageButton"
+                        @if($isTransactionCompleted) disabled @endif>
                     画像を追加
             </button>
 
             <button type="submit" 
-                    class="btn btn-light"
-                    @if($isTransactionCompleted) disabled @endif>
+                        class="btn btn-light"
+                        @if($isTransactionCompleted) disabled @endif>
                 <i class="fa-regular fa-paper-plane"></i>
             </button>
         </form>
@@ -249,9 +275,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===== 入力内容の保持（localStorage） =====
     const inputField = document.querySelector('input[name="message"]');
     if (inputField) {
-        const chatRoomId = {{ $chatRoom->id }};
+        // chatRoomId が存在するか確認 (Blade変数 $chatRoom->id が存在すること前提)
+        const chatRoomId = '{{ $chatRoom->id ?? 'draft' }}';
         const storageKey = `chat_draft_${chatRoomId}`;
         const savedDraft = localStorage.getItem(storageKey);
+        
         if (savedDraft) inputField.value = savedDraft;
 
         inputField.addEventListener('input', () => {

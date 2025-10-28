@@ -15,7 +15,7 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('chat_room_id')->after('id');
+            $table->unsignedBigInteger('chat_room_id')->nullable();
             $table->unsignedBigInteger('purchase_id')->unique();
             $table->string('status', 50);
             $table->timestamp('completed_at')->nullable();
@@ -25,7 +25,6 @@ class CreateTransactionsTable extends Migration
             $table->integer('seller_unread_count')->default(0);
             $table->timestamps();
 
-            $table->foreign('chat_room_id')->references('id')->on('chat_rooms')->onDelete('cascade');
             $table->foreign('purchase_id')->references('id')->on('purchases')->onDelete('cascade');
         });
     }

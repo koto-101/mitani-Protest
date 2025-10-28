@@ -310,6 +310,31 @@ input[type="file"] {
   background-color: #ff3333; /* ホバー時の色 */
 }
 
+.message-buttons .btn {
+  background: none ;
+  border: none ;
+  box-shadow: none ;
+  padding: 0 ;
+  margin: 5px ; /* ボタン間隔を少し調整 */
+  font-size: 13px ; /* 小さい文字 */
+  color: #000000 ; /* 黒い文字 */
+  font-weight: normal ; /* ボールドを解除 */ 
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  line-height: 1;
+  vertical-align: top; /* 垂直方向の基準線をトップに揃える */
+}
+.edit-message-btn{
+  text-decoration: none ; 
+  font-size: 13px ; /* 小さい文字 */
+  color: #000000 ; /* 黒い文字 */
+  font-weight: normal ;
+  padding: 0 ;
+  margin: 5px ;
+  vertical-align: top; /* 垂直方向の基準線をトップに揃える */
+  line-height: 1;
+}
 /* タブレット向け調整 */
 @media (min-width: 768px) and (max-width: 850px) {
   .chat-sidebar {

@@ -15,6 +15,7 @@ class EvaluationController extends Controller
     {
         $request->validate([
             'score' => 'required|integer|min:1|max:5',
+            'comment' => 'nullable|string|max:400',
         ]);
 
         $chatRoom = ChatRoom::findOrFail($chatRoomId);
@@ -35,6 +36,7 @@ class EvaluationController extends Controller
             ],
             [
                 'score' => $request->score,
+                'comment' => $request->comment,
             ]
         );
 
