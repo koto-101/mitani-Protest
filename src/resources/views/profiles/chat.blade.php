@@ -126,7 +126,7 @@
                             </div>
                         </div>
 
-                        {{-- ★★★ 修正箇所: 編集・削除ボタンを追加 ★★★ --}}
+                        {{--編集・削除ボタン--}}
                         @if($isMine && !$isTransactionCompleted)
                             <div class="message-buttons d-flex flex-column align-items-center me-2 ms-2">
                                 {{-- 編集リンク（モーダル起動用） --}}
@@ -138,7 +138,7 @@
                                 <form action="{{ route('chat.message.destroy', ['chatMessage' => $message->id]) }}" method="POST" class="m-0 p-0">
                                     @csrf
                                     @method('DELETE')
-                                    {{-- NOTE: confirm() は使えませんが、ここはLaravelの慣例として残します。ただし、カスタムモーダル推奨です。 --}}
+                                    
                                     <button type="submit" 
                                             onclick="return confirm('本当にこのメッセージを削除しますか？')" 
                                             class="btn btn-link text-danger p-0 border-0 small">削除</button>
@@ -179,8 +179,8 @@
     </div>
 </div>
 
-<div id="editMessageModal" class="modal-overlay" style="display: none;">
-    <div class="modal-content">
+<div id="editMessageModal" class="modal-overlay modal-edit" style="display: none;">
+  <div class="modal-content">
         <h3>メッセージ編集</h3>
         <form id="editMessageForm" method="POST">
             @csrf

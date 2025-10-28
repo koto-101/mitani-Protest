@@ -2,24 +2,36 @@
 ## 環境構築
 **Dockerビルド**
 1. リポジトリをクローン
-`git clone git@github.com:koto-101/mitani-coachtech-furima.git`
+``` bash
+git clone git@github.com:koto-101/mitani-Protest.git
+```
 2. ディレクトリを移動
-`cd mitani-coachtech-furima/`
-2. DockerDesktopアプリを立ち上げる
-3. `docker compose up -d --build`
-
+``` bash
+cd mitani-Protest
+```
+3. DockerDesktopアプリを立ち上げる
+``` bash
+docker compose up -d --build
+```
 **Laravel環境構築**
 1. PHPコンテナに入る
-`docker-compose exec php bash`
+``` bash
+docker-compose exec php bash
+```
 2. パッケージインストール
-`composer install`
+``` bash
+composer install
+```
 3. ディレクトリを移動
-`cd src/`
+``` bash
+cd src/
+```
 4. .env ファイル作成
 ```bash
 cp .env.example .env
 ```
-5. .env に以下のDB設定を記述
+5. .env に以下のDB、メール設定を記述
+#### データベース設定
 ``` text
 DB_CONNECTION=mysql
 DB_HOST=mysql
@@ -28,13 +40,17 @@ DB_DATABASE=laravel_db
 DB_USERNAME=laravel_user
 DB_PASSWORD=laravel_pass
 
+```
+#### メール設定
+``` text
 MAIL_FROM_ADDRESS=no-reply@example.com
+
 ```
 6. アプリケーションキーの作成
 ``` bash
 php artisan key:generate
 ```
-7. 設定キャッシュ（.env変更時は都度推奨） 
+7. 設定キャッシュ（環境変数変更時は都度推奨） 
 ``` bash 
 php artisan config:cache
 ```
@@ -58,6 +74,9 @@ php artisan storage:link
 - **言語・フレームワーク**:
   - Laravel 8.4.6
   - PHP 8.2.27
+- **フロントエンド**:
+  - HTML / CSS（Bladeテンプレート, Bootstrap）
+  - JavaScript（Vanilla JS）
 - **認証**: Laravel Fortify
 - **バリデーション**: FormRequest
 - **メール送信確認**: Mailhog
@@ -70,65 +89,97 @@ php artisan storage:link
 ![ER図](./index.png)
 
 ##　テーブル仕様書
-| テーブル名           | カラム名                | 型                    | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY                     |
-|---------------------|------------------------|----------------------|------------|------------|---------|--------------------------------|
-| users               | id                     | bigint (auto increment) | 〇          |            | 〇       |                                |
-|                     | name                   | string(20)           |            |            | 〇       |                                |
-|                     | email                  | string               |            | 〇          | 〇       |                                |
-|                     | password               | string               |            |            | 〇       |                                |
-|                     | postal_code            | string               |            |            |         |                                |
-|                     | address                | string               |            |            |         |                                |
-|                     | building_name          | string               |            |            |         |                                |
-|                     | avatar_path            | string               |            |            |         |                                |
-|                     | email_verified_at      | timestamp            |            |            |         |                                |
-|                     | created_at / updated_at| timestamps           |            |            |         |                                |
-| categories          | id                     | bigint (auto increment) | 〇          |            | 〇       |                                |
-|                     | name                   | string               |            | 〇          | 〇       |                                |
-|                     | created_at / updated_at| timestamps           |            |            |         |                                |
-| items               | id                     | bigint (auto increment) | 〇          |            | 〇       |                                |
-|                     | user_id                | unsignedBigInteger   |            |            | 〇       | users.id                        |
-|                     | title                  | string               |            |            |         |                                |
-|                     | brand                  | string               |            |            |         |                                |
-|                     | description            | text                 |            |            |         |                                |
-|                     | price                  | integer unsigned     |            |            | 〇       |                                |
-|                     | condition              | string               |            |            |         |                                |
-|                     | status                 | string               |            |            |         |                                |
-|                     | created_at / updated_at| timestamps           |            |            |         |                                |
-| item_images         | id                     | bigint (auto increment) | 〇          |            | 〇       |                                |
-|                     | item_id                | unsignedBigInteger   |            |            | 〇       | items.id                        |
-|                     | image_path             | string               |            |            | 〇       |                                |
-|                     | created_at / updated_at| timestamps           |            |            |         |                                |
-| purchases           | id                     | bigint (auto increment) | 〇          |            | 〇       |                                |
-|                     | user_id                | unsignedBigInteger   |            |            | 〇       | users.id                        |
-|                     | item_id                | unsignedBigInteger   |            |            | 〇       | items.id                        |
-|                     | shipping_address_id    | unsignedBigInteger   |            |            |         | shipping_addresses.id           |
-|                     | payment_method         | string               |            |            |         |                                |
-|                     | purchase_postal_code   | string               |            |            |         |                                |
-|                     | purchase_address       | string               |            |            |         |                                |
-|                     | purchase_building_name | string               |            |            |         |                                |
-|                     | created_at / updated_at| timestamps           |            |            |         |                                |
-| comments            | id                     | bigint (auto increment) | 〇          |            | 〇       |                                |
-|                     | user_id                | unsignedBigInteger   |            |            | 〇       | users.id                        |
-|                     | item_id                | unsignedBigInteger   |            |            | 〇       | items.id                        |
-|                     | content                | text                 |            |            | 〇       |                                |
-|                     | created_at / updated_at| timestamps           |            |            |         |                                |
-| likes               | id                     | bigint (auto increment) | 〇          |            | 〇       |                                |
-|                     | user_id                | unsignedBigInteger   |            |            | 〇       | users.id                        |
-|                     | item_id                | unsignedBigInteger   |            |            | 〇       | items.id                        |
-|                     | created_at / updated_at| timestamps           |            |            |         |                                |
-| (複合)              | user_id + item_id      |                      | 〇          | 〇          |         |                                |
-| category_item       | id                     | bigint (auto increment) | 〇          |            | 〇       |                                |
-|                     | item_id                | foreignId            |            |            | 〇       | items.id                        |
-|                     | category_id            | foreignId            |            |            | 〇       | categories.id                   |
-|                     | created_at / updated_at| timestamps           |            |            |         |                                |
-| (複合)              | item_id + category_id  |                      | 〇          | 〇          |         |                                |
-| shipping_addresses  | id                     | bigint (auto increment) | 〇          |            | 〇       |                                |
-|                     | user_id                | foreignId            |            |            | 〇       | users.id                        |
-|                     | item_id                | foreignId            |            |            | 〇       | items.id                        |
-|                     | postal_code            | string               |            |            |         |                                |
-|                     | address                | string               |            |            |         |                                |
-|                     | building_name          | string               |            |            |         |                                |
-|                     | created_at / updated_at| timestamps           |            |            |         |                                |
+| テーブル名                  | カラム名                        | 型                       | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY                |
+| ---------------------- | --------------------------- | ----------------------- | ----------- | ---------- | -------- | -------------------------- |
+| **users**              | id                          | bigint (auto increment) | 〇           |            | 〇        |                            |
+|                        | name                        | string(20)              |             |            | 〇        |                            |
+|                        | email                       | string                  |             | 〇          | 〇        |                            |
+|                        | password                    | string                  |             |            | 〇        |                            |
+|                        | postal_code                 | string                  |             |            |          |                            |
+|                        | address                     | string                  |             |            |          |                            |
+|                        | building_name               | string                  |             |            |          |                            |
+|                        | avatar_path                 | string                  |             |            |          |                            |
+|                        | email_verified_at           | timestamp               |             |            |          |                            |
+|                        | created_at / updated_at     | timestamps              |             |            |          |                            |
+| **categories**         | id                          | bigint (auto increment) | 〇           |            | 〇        |                            |
+|                        | name                        | string                  |             | 〇          | 〇        |                            |
+|                        | created_at / updated_at     | timestamps              |             |            |          |                            |
+| **items**              | id                          | bigint (auto increment) | 〇           |            | 〇        |                            |
+|                        | user_id                     | unsignedBigInteger      |             |            | 〇        | users.id                   |
+|                        | title                       | string                  |             |            |          |                            |
+|                        | brand                       | string                  |             |            |          |                            |
+|                        | description                 | text                    |             |            |          |                            |
+|                        | price                       | integer unsigned        |             |            | 〇        |                            |
+|                        | condition                   | string                  |             |            |          |                            |
+|                        | status                      | string                  |             |            |          |                            |
+|                        | created_at / updated_at     | timestamps              |             |            |          |                            |
+| **item_images**        | id                          | bigint (auto increment) | 〇           |            | 〇        |                            |
+|                        | item_id                     | unsignedBigInteger      |             |            | 〇        | items.id                   |
+|                        | image_path                  | string                  |             |            | 〇        |                            |
+|                        | created_at / updated_at     | timestamps              |             |            |          |                            |
+| **purchases**          | id                          | bigint (auto increment) | 〇           |            | 〇        |                            |
+|                        | user_id                     | unsignedBigInteger      |             |            | 〇        | users.id                   |
+|                        | item_id                     | unsignedBigInteger      |             |            | 〇        | items.id                   |
+|                        | payment_method              | string                  |             |            |          |                            |
+|                        | purchase_postal_code        | string                  |             |            |          |                            |
+|                        | purchase_address            | string                  |             |            |          |                            |
+|                        | purchase_building_name      | string                  |             |            |          |                            |
+|                        | created_at / updated_at     | timestamps              |             |            |          |                            |
+| **comments**           | id                          | bigint (auto increment) | 〇           |            | 〇        |                            |
+|                        | user_id                     | unsignedBigInteger      |             |            | 〇        | users.id                   |
+|                        | item_id                     | unsignedBigInteger      |             |            | 〇        | items.id                   |
+|                        | content                     | text                    |             |            | 〇        |                            |
+|                        | created_at / updated_at     | timestamps              |             |            |          |                            |
+| **likes**              | id                          | bigint (auto increment) | 〇           |            | 〇        |                            |
+|                        | user_id                     | unsignedBigInteger      |             |            | 〇        | users.id                   |
+|                        | item_id                     | unsignedBigInteger      |             |            | 〇        | items.id                   |
+|                        | created_at / updated_at     | timestamps              |             |            |          |                            |
+| (複合)                   | user_id + item_id           |                         |             | 〇          |          |                            |
+| **category_item**      | id                          | bigint (auto increment) | 〇           |            | 〇        |                            |
+|                        | item_id                     | foreignId               |             |            | 〇        | items.id                   |
+|                        | category_id                 | foreignId               |             |            | 〇        | categories.id              |
+|                        | created_at / updated_at     | timestamps              |             |            |          |                            |
+| (複合)                   | item_id + category_id       |                         |             | 〇          |          |                            |
+| **shipping_addresses** | id                          | bigint (auto increment) | 〇           |            | 〇        |                            |
+|                        | user_id                     | foreignId               |             |            | 〇        | users.id                   |
+|                        | item_id                     | foreignId               |             |            | 〇        | items.id                   |
+|                        | postal_code                 | string                  |             |            |          |                            |
+|                        | address                     | string                  |             |            |          |                            |
+|                        | building_name               | string                  |             |            |          |                            |
+|                        | created_at / updated_at     | timestamps              |             |            |          |                            |
+| **chat_rooms**         | id                          | bigint (auto increment) | 〇           |            | 〇        |                            |
+|                        | item_id                     | unsignedBigInteger      |             |            | 〇        | items.id                   |
+|                        | buyer_id                    | unsignedBigInteger      |             |            | 〇        | users.id                   |
+|                        | created_at / updated_at     | timestamps              |             |            |          |                            |
+| (複合)                   | item_id + buyer_id          |                         |             | 〇          |          |                            |
+| **chat_messages**      | id                          | bigint (auto increment) | 〇           |            | 〇        |                            |
+|                        | chat_room_id                | unsignedBigInteger      |             |            | 〇        | chat_rooms.id              |
+|                        | sender_id                   | unsignedBigInteger      |             |            | 〇        | users.id                   |
+|                        | message                     | text                    |             |            | 〇        |                            |
+|                        | image_path                  | string                  |             |            |          |                            |
+|                        | created_at / updated_at     | timestamps              |             |            |          |                            |
+| **chat_reads**         | id                          | bigint (auto increment) | 〇           |            | 〇        |                            |
+|                        | chat_room_id                | unsignedBigInteger      |             |            | 〇        | chat_rooms.id              |
+|                        | user_id                     | unsignedBigInteger      |             |            | 〇        | users.id                   |
+|                        | last_read_message_id        | unsignedBigInteger      |             |            |          | chat_messages.id（set null） |
+|                        | updated_at                  | timestamp               |             |            |          |                            |
+| (複合)                   | chat_room_id + user_id      |                         |             | 〇          |          |                            |
+| **evaluations**        | id                          | bigint (auto increment) | 〇           |            | 〇        |                            |
+|                        | chat_room_id                | unsignedBigInteger      |             |            | 〇        | chat_rooms.id              |
+|                        | evaluator_id                | unsignedBigInteger      |             |            | 〇        | users.id                   |
+|                        | target_user_id              | unsignedBigInteger      |             |            | 〇        | users.id                   |
+|                        | score                       | integer                 |             |            | 〇        |                            |
+|                        | comment                     | string(400)             |             |            |          |                            |
+|                        | created_at / updated_at     | timestamps              |             |            |          |                            |
+| (複合)                   | chat_room_id + evaluator_id |                         |             | 〇          |          |                            |
+| **transactions**       | id                          | bigint (auto increment) | 〇           |            | 〇        |                            |
+|                        | chat_room_id                | unsignedBigInteger      |             |            | 〇        | chat_rooms.id              |
+|                        | purchase_id                 | unsignedBigInteger      |             | 〇          | 〇        | purchases.id               |
+|                        | status                      | string(50)              |             |            | 〇        |                            |
+|                        | completed_at                | timestamp               |             |            |          |                            |
+|                        | buyer_evaluated             | boolean                 |             |            | 〇        |                            |
+|                        | seller_evaluated            | boolean                 |             |            | 〇        |                            |
+|                        | created_at / updated_at     | timestamps              |             |            |          |                            |
 
 ## URL一覧
 - 開発環境：http://localhost
@@ -137,6 +188,12 @@ php artisan storage:link
 
 ---
 
+## テストアカウント一覧
+| 名前     | メールアドレス           | パスワード   |
+|----------|------------------------|--------------|
+| user1    | user1@example.com      | password     |
+| user2    | user2@example.com      | password     |
+| user3    | user3@example.com      | password     |
 # Stripe WebhookとCLIのセットアップ
 
 Stripeの決済機能を実装するためには、Webhookを受け取る設定と、ローカルでStripeイベントをテストするためにStripe CLIを使用します。
@@ -155,7 +212,8 @@ stripe login
 ```bash
 stripe listen --forward-to http://localhost:80/stripe/webhook
 ```
-※ このコマンドは、開発中・テスト中は別ターミナルで継続実行してください
+※ このコマンドは、開発中・テスト中は別ターミナルで継続実行してください。
+この「継続実行」というのは、別タブ（ターミナル）でコマンドを実行し、そのまま開いた状態にしておかないと、購入処理が正常に行われないという意味で記載しています
 ※ `localhost` のポート番号（例: `80` や `8000`）は、実際のアプリ起動ポートに合わせて変更してください
 
 #### 4. Webhook Secret を `.env` に記載
@@ -173,13 +231,44 @@ https://dashboard.stripe.com/test/apikeys
 以下を `.env` または `.env.testing` に追記：
 
 ```env
-STRIPE_KEY=sk_test_**********
-STRIPE_SECRET=pk_test_**********
+STRIPE_KEY=pk_test_**********
+STRIPE_SECRET=sk_test_**********
 STRIPE_WEBHOOK_SECRET=whsec_**********
 ```
 
 ※ これらのキーはセキュリティ上、Gitに含めていません。自身のアカウントで取得し、ローカルに設定してください。
-
+## テストについて
+1. テスト用データベースの作成
+```bash
+docker-compose exec mysql bash
+mysql -u root -p
+# パスワードは「root」と入力
+create database demo_test;
+```
+2. ユーザー権限を付与
+次に、laravel_user ユーザーに対してdemo_test への権限を付与します：
+```bash
+GRANT ALL PRIVILEGES ON demo_test.* TO 'laravel_user'@'%';
+FLUSH PRIVILEGES;
+```
+3. .env.testing の作成
+```bash
+cp .env .env.testing
+```
+4. .env.testing に以下のDB設定を記述
+``` text
+DB_DATABASE=demo_test
+```
+5. キャッシュをクリア
+```bash
+docker-compose exec php bash
+php artisan cache:clear
+php artisan config:clear
+```
+6. テスト用マイグレーションを実行
+```bash
+php artisan migrate:fresh --env=testing
+```
 ## テストの実行
 
 以下のコマンドでテストが実行できます
@@ -187,21 +276,18 @@ STRIPE_WEBHOOK_SECRET=whsec_**********
 ```bash
 php artisan test
 ```
-
+## キャッシュのクリア
+手順通りに実行していただいてもphpMyAdminでDBやテーブルの確認ができないことがあります。
+以下のコマンドを実行してキャッシュをクリアし、再度マイグレーションを試してみてください。
+```bash
+php artisan cache:clear
+php artisan config:clear
+```
 ## 備考・補足事項
 
-- 環境変数を変更した際は、`php artisan config:cache` を実行してください。
 - Stripe決済テストに関する入力例
   - カード番号：4242 4242 4242 4242
   - 名義：スペース区切りで名字と名前を入力（例：Taro Taguchi）
   - 有効期限：現在より未来の年月を指定
   - セキュリティコード：任意の3桁または4桁の数字
 
-- メール認証後の画面遷移について
-機能要件およびテストケースでは「商品一覧画面」へ遷移する仕様となっていましたが、Figmaのデザインでは「プロフィール編集画面」への遷移となっていたため、Figmaを優先し、プロフィール編集画面へ遷移する設計としています。
-
-- マイページから自身の出品商品を選択した場合の遷移について
-このケースの遷移先が仕様上明示されていなかったため、商品詳細画面を表示する設計としています。
-ただし、自分の商品に対しては購入処理やコメント投稿ができないよう、バリデーションでエラーを表示する処理を実装しています。
-
-最後の2点については、本来であれば仕様確認のうえで対応すべき内容でしたが、提出期限に間に合わない可能性があったため、自身で判断のうえ対応いたしました。
