@@ -150,6 +150,13 @@
             @endforeach
         </div>
 
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                @foreach ($errors->all() as $error)
+                    <div>{{ $error }}</div>
+                @endforeach
+            </div>
+        @endif
         {{-- メッセージ入力 --}}
         <form action="{{ route('chat.message.store', ['chatRoom' => $chatRoom->id]) }}" method="POST" enctype="multipart/form-data" class="d-flex align-items-center">
             @csrf
