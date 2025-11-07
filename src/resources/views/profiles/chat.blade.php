@@ -113,7 +113,8 @@
                     </div>
 
                     {{-- 吹き出し部分と操作ボタン --}}
-                    <div class="d-flex align-items-end {{ $isMine ? 'flex-row-reverse' : '' }}">
+                    <div class="{{ $isMine ? 'text-end' : 'text-start' }}">
+
                         {{-- 吹き出し本体 --}}
                         <div class="message-bubble {{ $isMine ? 'text-end' : 'text-start' }}">
                             <div class="message rounded {{ $isMine ? 'bg-primary text-white' : 'bg-light' }}">

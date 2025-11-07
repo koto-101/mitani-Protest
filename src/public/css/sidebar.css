@@ -87,7 +87,7 @@
 /* ================= Media Queries ================= */
 
 /* PC (1400〜1540px) */
-@media screen and (min-width: 1400px) and (max-width: 1540px) {
+@media screen and (min-width: 1400px) and (max-width: 1550px) {
   .nav-bar {
     padding: 0 40px;
     gap: 40px;
@@ -99,7 +99,7 @@
 }
 
 /* タブレット (768〜850px) */
-@media screen and (min-width: 768px) and (max-width: 850px) {
+@media screen and (min-width: 768px) and (max-width: 870px) {
   header {
     gap: 10px;
     height: 64px;

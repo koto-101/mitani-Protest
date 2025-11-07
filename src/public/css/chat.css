@@ -29,15 +29,15 @@
 }
 
 .chat-sidebar a {
-  display: block;              /* 縦に並べる */
+  display: block;              
   padding: 10px;  
-  margin: 10%;        /* ボタン風の余白 */
-  margin-bottom: 8px;          /* 下のリンクとの間隔 */
+  margin: 10%;   
+  margin-bottom: 8px;      
   background-color: #eeeded; 
   color: #000;
-  text-decoration: none;       /* 下線なし */
-  border-radius: 5px;          /* 角丸 */
-  text-align: center;          /* 中央揃え */
+  text-decoration: none;  
+  border-radius: 5px;    
+  text-align: center;     
   font-size: 18px;   
   width: 80%;
 }
@@ -65,7 +65,7 @@
 }
 
 .btn-success {
-  white-space: nowrap; /* ボタンの改行防止 */
+  white-space: nowrap; 
   margin: 0 ;
   padding: 8px 16px;
   font-size: 20px;
@@ -79,8 +79,8 @@
 
 .chat-header-top .profile-info {
   display: flex;
-  align-items: center; /* 画像とテキストを縦中央揃え */
-  gap: 0.5rem; /* 画像と名前の間の隙間 */
+  align-items: center;
+  gap: 0.5rem; 
 }
 
 .profile-info h5{
@@ -95,25 +95,25 @@
 }
 
 .item-info {
-  display: flex;           /* 左右に並べる */
-  align-items: center;     /* 上下中央揃え */
-  gap: 1rem;               /* 画像とテキストの間隔 */
+  display: flex;          
+  align-items: center;    
+  gap: 1rem;               
   margin-top: 1rem;
   font-size: 40px;
   border-top: 3px solid #818181;
 }
 
 .item-image {
-  width: 80px;             /* お好みでサイズ調整 */
+  width: 80px;             
   height: 80px;
   object-fit: cover;
-  border-radius: 8px;      /* 角丸にする場合 */
+  border-radius: 8px; 
 }
 
 .item-info div {
   display: flex;
-  flex-direction: column;  /* タイトルと価格を縦並びに */
-  justify-content: center; /* 高さを中央揃え */
+  flex-direction: column;
+  justify-content: center;
 }
 
 .item-title {
@@ -144,8 +144,8 @@
 /* --- メッセージ --- */
 .chat-message {
   display: flex;
-  flex-direction: column; /* 上下に並べる */
-  align-items: flex-start; /* デフォルトは左寄せ */
+  flex-direction: column;
+  align-items: flex-start;
   margin-bottom: 1rem;
 }
 
@@ -154,13 +154,11 @@
   align-items: center;
   gap: 0.5rem;
 }
+
 .chat-message.mine .message {
   background-color: #f1f1f1;
   color: black;
   flex-direction: row-reverse;
-}
-.chat-message.mine .message-header {
-  flex-direction: row-reverse; /* 名前とアイコンを逆に */
 }
 
 .chat-message.partner .message {
@@ -169,7 +167,7 @@
 }
 
 .chat-message.mine {
-  align-items: flex-end; /* 自分のメッセージは右寄せ */
+  align-items: flex-end;
 }
 
 .chat-message.mine .message-buttons {
@@ -179,13 +177,14 @@
 }
 
 .message {
-  padding: 0.5rem 1rem;
+  padding: 10px 20px;
   border-radius: 10px;
-  max-width: 80%;
-  height: auto ; 
+  width: fit-content;
+  height: auto; 
+  width: 400px;
   word-wrap: break-word;
-  white-space: pre-wrap;
   display: block;
+  font-size: 20px;
 }
 
 /* --- フッター／入力フォーム --- */
@@ -197,7 +196,7 @@ form.d-flex {
 .form-control {
   font-size: 24px;
   padding: 10px;
-  width: 70%; /* 親に合わせて広げる */
+  width: 70%; 
   box-sizing: border-box;
   border: 1px solid #000;
   border-radius: 4px;
@@ -240,8 +239,8 @@ input[type="file"] {
   padding: auto;
 }
 .btn-light {
-  border: none; /* ボーダーを消す */
-  background-color: #fff; /* 必要に応じて背景色を変更 */
+  border: none; 
+  background-color: #fff;
 }
 
 /* --- モーダル --- */
@@ -264,8 +263,8 @@ input[type="file"] {
   width: 90%;
   max-width: 700px;
   min-height: 400px;
-  max-height: none; /* 画面の90%まで */
-  overflow-y: auto; /* 内容が多い場合はスクロール */
+  max-height: none; 
+  overflow-y: auto;
   border:2px solid #000;
 }
 
@@ -317,13 +316,13 @@ input[type="file"] {
   background-color: #fa8181;
   color: #fff;
   padding: 10px 20px;
-  border: none;              /* 枠線を消す */
+  border: none;   
   border-radius: 8px; 
   font-size: 24px; 
   cursor: pointer; 
 }
 .btn-primary:hover {
-  background-color: #ff3333; /* ホバー時の色 */
+  background-color: #ff3333; 
 }
 
 .message-buttons .btn {
@@ -331,24 +330,24 @@ input[type="file"] {
   border: none ;
   box-shadow: none ;
   padding: 0 ;
-  margin: 5px ; /* ボタン間隔を少し調整 */
-  font-size: 13px ; /* 小さい文字 */
-  color: #000000 ; /* 黒い文字 */
-  font-weight: normal ; /* ボールドを解除 */ 
+  margin: 5px ; 
+  font-size: 13px ;
+  color: #000000 ;
+  font-weight: normal ;
   appearance: none;
   -webkit-appearance: none;
   cursor: pointer;
   line-height: 1;
-  vertical-align: top; /* 垂直方向の基準線をトップに揃える */
+  vertical-align: top;
 }
 .edit-message-btn{
   text-decoration: none ; 
-  font-size: 13px ; /* 小さい文字 */
-  color: #000000 ; /* 黒い文字 */
+  font-size: 13px ; 
+  color: #000000 ;
   font-weight: normal ;
   padding: 0 ;
   margin: 5px ;
-  vertical-align: top; /* 垂直方向の基準線をトップに揃える */
+  vertical-align: top;
   line-height: 1;
 }
 
@@ -381,7 +380,7 @@ input[type="file"] {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 8px;
-  resize: vertical; /* 高さを調整可能に */
+  resize: vertical;
   margin-bottom: 1.5rem;
 }
 
@@ -422,7 +421,7 @@ input[type="file"] {
 }
 
 /* タブレット向け調整 */
-@media (min-width: 768px) and (max-width: 850px) {
+@media (min-width: 768px) and (max-width: 870px) {
   .chat-sidebar {
     width: 150px;
   }
@@ -460,6 +459,11 @@ input[type="file"] {
 
   .item-price{
     font-size: 18px;
+  }
+
+  .message {
+    width: 250px;
+    font-size: 15px;
   }
   /* フッターの入力フォームを横幅に合わせる */
   .form-control {

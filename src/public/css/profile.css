@@ -19,15 +19,15 @@ body {
 
 .profile-header {
   display: flex;
-  justify-content: space-between; /* 左右に分ける */
-  align-items: center;            /* 縦方向の中央揃え */
+  justify-content: space-between; 
+  align-items: center;        
   margin: 30px 0;
 }
 
 .profile-left {
-  display: flex;                  /* 画像とテキストを横並びに */
-  align-items: center;            /* 縦中央揃え */
-  gap: 30px;                      /* 画像とテキストの間隔 */
+  display: flex;                
+  align-items: center;          
+  gap: 30px;                     
 }
 
 .profile-avatar {
@@ -77,12 +77,12 @@ body {
   box-sizing: border-box;
 }
 .tab-menu .badge {
-  background-color: #dc3545; /* 赤色 */
-  color: #fff;               /* 白文字 */
-  font-size: 0.75rem;        /* 少し小さめ */
-  border-radius: 35%;        /* 丸くする */
-  padding: 0.25rem 0.5rem;   /* 内側の余白調整 */
-  vertical-align: middle;    /* テキスト中央寄せ */
+  background-color: #dc3545;
+  color: #fff;              
+  font-size: 0.75rem;      
+  border-radius: 35%;       
+  padding: 0.25rem 0.5rem; 
+  vertical-align: middle; 
 }
 
 .item-card {
@@ -91,19 +91,19 @@ body {
 
 .item-card .badge-unread {
   position: absolute;
-  top: 0;      /* 上からの位置 */
-  left: 0;     /* 左からの位置 */
+  top: 0;    
+  left: 0;   
    transform: translate(200%, 10%);
-  background-color: #dc3545; /* 赤色 */
-  color: #fff;               /* 白文字 */
-  font-size: 0.65rem;        /* 小さくする */
-  border-radius: 50%;        /* 丸くする */
-  width: 20px;               /* 固定サイズ */
+  background-color: #dc3545;
+  color: #fff;              
+  font-size: 0.65rem;     
+  border-radius: 50%;       
+  width: 20px;           
   height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10;               /* 商品画像の上に出す */
+  z-index: 10;              
 }
 
 .item-card a .item-image {
@@ -133,7 +133,7 @@ body {
 }
 
 .item-card {
-  flex: 0 0 calc((100% - 60px) / 4); /* 4枚並べる */
+  flex: 0 0 calc((100% - 60px) / 4); 
   max-width: calc((100% - 60px) / 4);
   padding: 0;
   margin: 0;
@@ -170,7 +170,7 @@ body {
 
 
 /* ===== Media Queries ===== */
-@media (min-width: 768px) and (max-width: 850px) {
+@media (min-width: 768px) and (max-width: 870px) {
   .profile-info {
     text-align: center;
   }
@@ -194,7 +194,7 @@ body {
   }
   
   .profile-left {
-    gap: 0;                      /* 画像とテキストの間隔 */
+    gap: 0;                     
   }
 
   .profile-avatar-wrapper {
@@ -206,7 +206,7 @@ body {
   }
 
   .item-list {
-    gap: 10px; /* カード間の間隔 */
+    gap: 10px;
     padding: 0 50px; 
   }
 
