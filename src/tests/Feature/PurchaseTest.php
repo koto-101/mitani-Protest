@@ -38,15 +38,19 @@ class PurchaseTest extends TestCase
             ],
         ];
 
-        $response = $this->postJson('/stripe/webhook', $payload);
+        // ← JSON文字列で送る、Content-Typeをapplication/jsonに
+        $response = $this->post('/stripe/webhook', json_encode($payload), [
+            'CONTENT_TYPE' => 'application/json',
+        ]);
 
         $response->assertStatus(200);
+
         $this->assertDatabaseHas('items', [
             'id' => $item->id,
             'status' => '売却済み',
         ]);
     }
-
+    
     /** @test */
     public function purchased_item_shows_sold_label_in_list()
     {
@@ -66,7 +70,13 @@ class PurchaseTest extends TestCase
 
         $item = $this->createItemWithImage();
 
+        // 購入処理
         $this->post("/purchase/{$item->id}");
+
+        // ProfileControllerで購入商品をビューに渡すように修正が必要
+        // 例:
+        // $userPurchases = Purchase::where('user_id', Auth::id())->with('item')->get();
+        // return view('mypage.profile', compact('userPurchases'));
 
         $response = $this->get("/mypage/profile");
 

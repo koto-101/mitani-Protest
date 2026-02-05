@@ -7,6 +7,7 @@ use App\Models\Item;
 use App\Models\Purchase;
 use App\Models\Transaction;
 use App\Models\ChatRoom;
+use App\Models\ChatMessage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -136,10 +137,13 @@ class TransactionItemTest extends TestCase
             'chat_room_id' => $chatRoomA->id,
             'purchase_id' => $purchaseA->id,
             'status' => 'in_progress',
-            'buyer_unread_count' => 2,
-            'seller_unread_count' => 0,
             'buyer_evaluated' => false,
             'seller_evaluated' => false,
+        ]);
+
+        ChatMessage::factory()->count(2)->create([
+            'chat_room_id' => $chatRoomA->id,
+            'sender_id' => $seller->id, 
         ]);
 
         // 商品B（未読5件）
@@ -159,10 +163,13 @@ class TransactionItemTest extends TestCase
             'chat_room_id' => $chatRoomB->id,
             'purchase_id' => $purchaseB->id,
             'status' => 'in_progress',
-            'buyer_unread_count' => 5,
-            'seller_unread_count' => 0,
             'buyer_evaluated' => false,
             'seller_evaluated' => false,
+        ]);
+
+        ChatMessage::factory()->count(5)->create([
+            'chat_room_id' => $chatRoomB->id,
+            'sender_id' => $seller->id,
         ]);
 
         // 完了済み商品（表示されない想定）
@@ -182,8 +189,6 @@ class TransactionItemTest extends TestCase
             'chat_room_id' => $completedChatRoom->id,
             'purchase_id' => $completedPurchase->id,
             'status' => 'completed',
-            'buyer_unread_count' => 0,
-            'seller_unread_count' => 0,
             'buyer_evaluated' => true,
             'seller_evaluated' => true,
         ]);

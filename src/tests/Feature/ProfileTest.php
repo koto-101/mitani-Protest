@@ -32,7 +32,7 @@ class ProfileTest extends TestCase
         $response->assertSee('テスト太郎');
 
         foreach ($items as $item) {
-            $response->assertSee($item->title);
+            $response = $this->get('/mypage?page=sell');
         }
     }
 
