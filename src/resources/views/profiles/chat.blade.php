@@ -161,7 +161,7 @@
         {{-- メッセージ入力 --}}
         <form action="{{ route('chat.message.store', ['chatRoom' => $chatRoom->id]) }}" method="POST" enctype="multipart/form-data" class="d-flex align-items-center">
             @csrf
-            <input type="text" name="message" class="form-control me-2" placeholder="取引メッセージを記入してください"
+            <input type="text" name="message" class="form-control me-2" placeholder="取引メッセージを記入してください" value="{{ old('message') }}"
                 @if($isTransactionCompleted) disabled @endif>
             <input type="file" 
                 id="imageInput" 

@@ -110,7 +110,7 @@ class TransactionChatTest extends TestCase
     // エラーが表示されていることを確認
     $response->assertSee('本文を入力してください。');
 
-    $response->assertSee('value="'); 
+    $response->assertSee('value="', false); 
 }
 
 

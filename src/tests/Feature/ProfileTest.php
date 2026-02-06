@@ -56,7 +56,7 @@ class ProfileTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = $this->get('/mypage?page=sell');
+        $response = $this->get('/mypage?page=buy');
 
         $response->assertStatus(200);
         $response->assertSee('テスト太郎');

@@ -76,8 +76,7 @@ class PurchaseTest extends TestCase
         $this->actingAs($user);
 
         $item = $this->createItemWithImage();
-
-        // 🔽 ここが重要：購入レコードを直接作る
+        
         \App\Models\Purchase::factory()->create([
             'user_id' => $user->id,
             'item_id' => $item->id,
