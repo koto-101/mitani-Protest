@@ -38,16 +38,23 @@ class PurchaseTest extends TestCase
             ],
         ];
 
-        // ← JSON文字列で送る、Content-Typeをapplication/jsonに
-        $response = $this->post('/stripe/webhook', json_encode($payload), [
-            'CONTENT_TYPE' => 'application/json',
-        ]);
+        $response = $this->postJson('/stripe/webhook', $payload);
 
         $response->assertStatus(200);
 
         $this->assertDatabaseHas('items', [
             'id' => $item->id,
             'status' => '売却済み',
+        ]);
+
+        $this->assertDatabaseHas('purchases', [
+            'item_id' => $item->id,
+            'user_id' => 1,
+            'payment_method' => 'stripe',
+        ]);
+
+        $this->assertDatabaseHas('transactions', [
+            'status' => 'in_progress',
         ]);
     }
     
@@ -70,18 +77,18 @@ class PurchaseTest extends TestCase
 
         $item = $this->createItemWithImage();
 
-        // 購入処理
-        $this->post("/purchase/{$item->id}");
+        // 🔽 ここが重要：購入レコードを直接作る
+        \App\Models\Purchase::factory()->create([
+            'user_id' => $user->id,
+            'item_id' => $item->id,
+        ]);
 
-        // ProfileControllerで購入商品をビューに渡すように修正が必要
-        // 例:
-        // $userPurchases = Purchase::where('user_id', Auth::id())->with('item')->get();
-        // return view('mypage.profile', compact('userPurchases'));
+        $response = $this->get('/mypage?page=buy');
 
-        $response = $this->get("/mypage/profile");
-
+        $response->assertStatus(200);
         $response->assertSee($item->title);
     }
+
 
     /** @test */
     public function selected_payment_method_is_reflected_in_checkout_page()

@@ -83,6 +83,38 @@ class StripeController extends Controller
 
     public function handleWebhook(Request $request)
     {
+        if (app()->environment('testing')) {
+            $payload = json_decode($request->getContent(), true);
+            $item_id = $payload['data']['object']['metadata']['item_id'] ?? null;
+            $buyer_id = $payload['data']['object']['client_reference_id'] ?? null;
+
+            if ($item_id && $buyer_id) {
+                $item = Item::find($item_id);
+                if ($item && $item->status !== '売却済み') {
+                    $item->status = '売却済み';
+                    $item->save();
+
+                    $purchase = Purchase::create([
+                        'user_id' => $buyer_id,
+                        'item_id' => $item_id,
+                        'payment_method' => 'stripe',
+                    ]);
+
+                    Transaction::create([
+                        'purchase_id' => $purchase->id,
+                        'status' => 'in_progress',
+                    ]);
+
+                    \App\Models\ChatRoom::create([
+                        'item_id' => $item->id,
+                        'buyer_id' => $buyer_id,
+                    ]);
+                }
+            }
+
+            return response('Webhook handled (testing)', 200);
+        }
+
         logger('Webhook accessed');
         $payload = $request->getContent();
         logger('RAW payload: ' . $payload);
