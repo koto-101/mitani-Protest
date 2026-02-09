@@ -20,11 +20,8 @@
                 <h3 class="mb-1">{{ $user->name }}</h3>
                 @if(!is_null($user->average_rating))
                     <div class="rating-stars">
-                        @php
-                            $roundedRating = round($user->average_rating);
-                        @endphp
                         @for ($i = 1; $i <= 5; $i++)
-                            @if($i <= $roundedRating)
+                            @if($i <= $user->average_rating)
                                 <span class="star filled">★</span>
                             @else
                                 <span class="star">★</span>

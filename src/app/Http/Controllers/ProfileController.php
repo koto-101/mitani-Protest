@@ -132,9 +132,10 @@ use App\Models\Transaction;
 
         // 評価平均（受けた評価）
         $averageRating = $user->receivedEvaluations()->avg('score');
+        $roundedRating = $averageRating !== null ? round($averageRating) : 0;
 
         return view('profiles.show', [
-            'user' => $user->setAttribute('average_rating', $averageRating),
+            'user' => $user->setAttribute('average_rating', $roundedRating),
             'items' => $items,
             'totalUnreadCount' => $totalUnreadCount,
             'currentPage' => $page,

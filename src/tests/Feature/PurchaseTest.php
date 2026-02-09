@@ -23,7 +23,7 @@ class PurchaseTest extends TestCase
     public function webhook_marks_item_as_sold()
     {
         $this->withoutMiddleware(\App\Http\Middleware\VerifyStripeWebhookSignature::class);
-
+        $user = User::factory()->create(['id' => 1]);
         $item = Item::factory()->create(['status' => '販売中']);
 
         $payload = [
