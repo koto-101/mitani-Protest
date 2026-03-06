@@ -5,16 +5,19 @@ header {
   padding: 15px 20px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   box-sizing: border-box;
   min-height: 60px; 
 }
 
 header .logo {
-  display: flex;
-  align-items: center;
-}
+    /* margin-right: 20px;
+    white-space: nowrap; */
+    flex-shrink: 0; 
+    font-size: 50px;
+    font-weight: bold;
 
+
+}
 header .logo img {
   display: block;
   margin: 0;
@@ -24,5 +27,7 @@ header .logo a {
   display: block;   /* インライン → ブロックにする */
   margin: 0;        /* デフォルト余白を消す */
   padding: 0; 
+  text-decoration: none;
+  color: white;
 }
 

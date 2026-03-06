@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>coachtechフリマ</title>
+    <title>Furima</title>
     <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
@@ -21,7 +21,7 @@
 <body>
     <header>
         <div class="logo">
-            <a href="/"><img src="{{ asset('images/logo.svg') }}" alt="Logo"></a>
+            <a href="/">Furima</a>
         </div>
 
         {{-- 画面によってサイドバー（ナビバー）を出す --}}
