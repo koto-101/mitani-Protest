@@ -52,7 +52,7 @@ RUN php artisan storage:link
 RUN composer install --no-dev --optimize-autoloader
 
 # Nginx 設定コピー
-COPY ./src/nginx.conf /etc/nginx/sites-enabled/default
+COPY ./nginx.conf /etc/nginx/sites-enabled/default
 
 # ポート開放
 EXPOSE 10000
