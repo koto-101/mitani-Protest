@@ -44,6 +44,6 @@ EXPOSE 10000
 
 # CMD: Nginx と PHP-FPM を起動
 CMD service nginx start \
- && php artisan migrate --force --seed \
+ && php artisan migrate --force \
  && php artisan storage:link \
  && php-fpm
