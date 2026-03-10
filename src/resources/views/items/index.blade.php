@@ -22,7 +22,7 @@
                 <div class="product-card">
                     <a href="/item/{{ $item->id }}">
                         @if ($item->images->isNotEmpty())
-                           <img src="{{ Storage::url($item->images->first()->image_path) }}" alt="{{ $item->title }}">
+                           <img src="{{ asset($item->images->first()->image_path) }}" alt="{{ $item->title }}">
                         @endif
 
                         @if ($item->status === '売却済み')
