@@ -4,6 +4,7 @@ FROM php:7.4-fpm-bullseye
 RUN apt-get update && apt-get install -y \
     nginx \
     default-mysql-client \
+    libpq-dev \
     zlib1g-dev \
     libzip-dev \
     unzip \
