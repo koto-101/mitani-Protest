@@ -31,6 +31,10 @@ RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache \
 # Composer install
 RUN composer install --no-dev --optimize-autoloader
 
+RUN php artisan config:clear
+RUN php artisan cache:clear
+RUN php artisan view:clear
+
 # Nginx 設定コピー
 COPY ./nginx.conf /etc/nginx/sites-enabled/default
 
