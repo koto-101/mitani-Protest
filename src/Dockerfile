@@ -25,6 +25,8 @@ WORKDIR /var/www
 # アプリコピー
 COPY . .
 
+COPY public/images /var/www/public/images
+
 # storage と cache に書き込み権限
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache \
     && chmod -R 775 /var/www/storage /var/www/bootstrap/cache
